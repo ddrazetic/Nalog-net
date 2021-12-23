@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import { Switch, Route, Link, NavLink } from "react-router-dom";
+// import "./App.css";
+import "./styles/style.css";
 
 import AuthService from "./services/auth.service";
-// import Navbar from "react-bootstrap/Navbar";
-// import Container from "react-bootstrap/Container";
-// import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
@@ -74,77 +75,70 @@ class App extends Component {
             path="/"
             render={() => (
               <>
-                {/* <Navbar bg="light" expand="lg">
+                <Navbar
+                  className="navShadow"
+                  style={{ backgroundColor: "white" }}
+                  expand="sm"
+                >
                   <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Brand className="navTitle" href="/home">
+                      Nalog-net
+                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                      <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
-                      </Nav>
-                    </Navbar.Collapse>
-                  </Container>
-                </Navbar> */}
-                <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                  <Link to={"/"} className="navbar-brand">
-                    Nalog-net
-                  </Link>
-                  <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                  >
-                    <span className="navbar-toggler-icon"></span>
-                  </button>
-                  <div
-                    className="collapse navbar-collapse"
-                    id="navbarNavAltMarkup"
-                  >
-                    <div className="navbar-nav mr-auto">
-                      <li className="nav-item">
-                        <Link to={"/home"} className="nav-link">
+                    <Navbar.Collapse
+                      className="navLinks"
+                      id="basic-navbar-nav "
+                    >
+                      <Nav className="me-auto ">
+                        <NavLink
+                          to={"/home"}
+                          className="nav-link"
+                          activeClassName="nav_link--active"
+                        >
                           Home
-                        </Link>
-                      </li>
+                        </NavLink>
 
-                      {showModeratorBoard && (
-                        <li className="nav-item">
-                          <Link to={"/mod"} className="nav-link">
+                        {showModeratorBoard && (
+                          <NavLink
+                            to={"/mod"}
+                            className="nav-link"
+                            activeClassName="nav_link--active"
+                          >
                             Moderator Board
-                          </Link>
-                        </li>
-                      )}
+                          </NavLink>
+                        )}
 
-                      {showAdminBoard && (
-                        <li className="nav-item">
-                          <Link to={"/admin"} className="nav-link">
+                        {showAdminBoard && (
+                          <NavLink
+                            to={"/admin"}
+                            activeClassName="nav_link--active"
+                            className="nav-link"
+                          >
                             Admin Board
-                          </Link>
-                        </li>
-                      )}
+                          </NavLink>
+                        )}
 
-                      {showUserBoard && (
-                        <li className="nav-item">
-                          <Link to={"/user"} className="nav-link">
+                        {showUserBoard && (
+                          <NavLink
+                            to={"/user"}
+                            className="nav-link"
+                            activeClassName="nav_link--active"
+                          >
                             User
-                          </Link>
-                        </li>
-                      )}
-                    </div>
+                          </NavLink>
+                        )}
+                      </Nav>
 
-                    {currentUser ? (
-                      <div className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                          <Link to={"/profile"} className="nav-link">
+                      {currentUser ? (
+                        <Nav className="ml-auto">
+                          <NavLink
+                            to={"/profile"}
+                            className="nav-link"
+                            activeClassName="nav_link--active"
+                          >
                             {currentUser.username}
-                          </Link>
-                        </li>
-                        <li className="nav-item">
+                          </NavLink>
+
                           <a
                             href="/login"
                             className="nav-link"
@@ -152,31 +146,35 @@ class App extends Component {
                           >
                             LogOut
                           </a>
-                        </li>
-                      </div>
-                    ) : (
-                      <div className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                          <Link to={"/login"} className="nav-link">
+                        </Nav>
+                      ) : (
+                        <Nav className="ml-auto">
+                          <NavLink
+                            to={"/login"}
+                            className="nav-link"
+                            activeClassName="nav_link--active"
+                          >
                             Login
-                          </Link>
-                        </li>
+                          </NavLink>
 
-                        <li className="nav-item">
-                          <Link to={"/register"} className="nav-link">
+                          <NavLink
+                            to={"/register"}
+                            className="nav-link"
+                            activeClassName="nav_link--active"
+                          >
                             Sign Up
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link to={"/superadmin"} className="nav-link">
+                          </NavLink>
+
+                          <NavLink to={"/superadmin"} className="nav-link">
                             Super admin
-                          </Link>
-                        </li>
-                      </div>
-                    )}
-                  </div>
-                </nav>
-                <div className="container mt-4">
+                          </NavLink>
+                        </Nav>
+                      )}
+                    </Navbar.Collapse>
+                  </Container>
+                </Navbar>
+
+                <div className="">
                   <Switch>
                     <Route exact path={["/", "/home"]} component={Home} />
                     <Route exact path="/login" component={Login} />
