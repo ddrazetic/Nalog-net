@@ -37,6 +37,8 @@ db.user_role = sequelize.define(
   }
 );
 
+// queryInterface.addColumn("users", "name", { type: DataTypes.STRING });
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",

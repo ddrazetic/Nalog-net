@@ -37,7 +37,7 @@ export default class BoardUser extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="card card-containerMax">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
         </header>

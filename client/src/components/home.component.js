@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Homepage from "../homepage.jpg";
 import UserService from "../services/user.service";
 
 export default class Home extends Component {
@@ -7,23 +7,23 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
     };
   }
 
   componentDidMount() {
     UserService.getPublicContent().then(
-      response => {
+      (response) => {
         this.setState({
-          content: response.data
+          content: response.data,
         });
       },
-      error => {
+      (error) => {
         this.setState({
           content:
             (error.response && error.response.data) ||
             error.message ||
-            error.toString()
+            error.toString(),
         });
       }
     );
@@ -31,10 +31,11 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header className="jumbotron">
+      <div className="card card-containerMax">
+        <header>
           <h3>{this.state.content}</h3>
         </header>
+        <img src={Homepage} alt="homepage"></img>
       </div>
     );
   }

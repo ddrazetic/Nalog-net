@@ -13,6 +13,7 @@ function UserList(props) {
     <List {...props}>
       <Datagrid>
         <TextField source="id" />
+        <TextField source="name" />
         <TextField source="username" />
         <TextField source="email" />
         <TextField source="roles.name" label="Role" />

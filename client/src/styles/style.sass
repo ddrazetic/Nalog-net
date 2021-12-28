@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
+$primaryColor: #776BCC
+$primaryLightColor: #C7C5F4
+$primaryShadow: #463e81
 *
     box-sizing: border-box
     margin: 0
@@ -13,7 +16,7 @@
     box-shadow: 5px 5px 10px #3d3c3c
 
 body
-    background: linear-gradient(90deg, #C7C5F4, #776BCC)
+    background: linear-gradient(90deg, $primaryLightColor, $primaryColor)
     font-family: 'Roboto', sans-serif !important
 
 .navTitle
@@ -21,12 +24,12 @@ body
 .navLinks
     font-size: 1.2rem !important
 .navShadow
-    box-shadow: 5px 5px 10px #463e81
+    box-shadow: 5px 5px 10px $primaryShadow
 
 .nav_link--active
-    color: #776BCC !important
+    color: $primaryColor !important
     height: 38px !important
-    border-bottom: 3px solid #776BCC
+    border-bottom: 3px solid $primaryColor
 
 .loginInput
     outline: 0
@@ -45,7 +48,7 @@ body
     font-family: 'Comfortaa', cursive
     text-transform: uppercase
     outline: 0
-    background: #776BCC
+    background: $primaryColor
     width: 100%
     border: 0
     border-radius: 5px
@@ -59,13 +62,16 @@ body
 .card-container.card
     max-width: 500px !important
     padding: 40px 40px
+.card-containerMax.card
+    max-width: 1200px !important
+    padding: 40px 40px
 
 .card
     background-color: #f7f7f7
     padding: 20px 25px 30px
     margin: 0 auto 25px
     margin-top: 50px
-    box-shadow: 5px 5px 10px #463e81
+    box-shadow: 5px 5px 10px $primaryShadow
     border-radius: 8px !important
 
 .profile-img-card
@@ -75,3 +81,6 @@ body
     display: block
 
     border-radius: 50%
+.loginLogo
+    margin: 0 auto 40px
+    color: $primaryColor

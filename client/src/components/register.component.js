@@ -6,6 +6,7 @@ import { isEmail } from "validator";
 import { Redirect } from "react-router";
 
 import AuthService from "../services/auth.service";
+import { PersonPlus } from "react-bootstrap-icons";
 
 const required = (value) => {
   if (!value) {
@@ -36,6 +37,15 @@ const vusername = (value) => {
     );
   }
 };
+const vname = (value) => {
+  if (value.length < 3 || value.length > 30) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Name must be between 3 and 30 characters.
+      </div>
+    );
+  }
+};
 
 const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
@@ -52,10 +62,12 @@ export default class Register extends Component {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
+      name: "",
       username: "",
       email: "",
       password: "",
@@ -67,6 +79,11 @@ export default class Register extends Component {
   onChangeUsername(e) {
     this.setState({
       username: e.target.value,
+    });
+  }
+  onChangeName(e) {
+    this.setState({
+      name: e.target.value,
     });
   }
 
@@ -96,7 +113,8 @@ export default class Register extends Component {
       AuthService.register(
         this.state.username,
         this.state.email,
-        this.state.password
+        this.state.password,
+        this.state.name
       ).then(
         (response) => {
           this.setState({
@@ -128,12 +146,7 @@ export default class Register extends Component {
     }
     return (
       <div className="card card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
-
+        <PersonPlus className="loginLogo" size={130} />
         <Form
           onSubmit={this.handleRegister}
           ref={(c) => {
@@ -142,6 +155,17 @@ export default class Register extends Component {
         >
           {!this.state.successful && (
             <div>
+              <div className="form-group">
+                <Input
+                  type="text"
+                  className="loginInput"
+                  name="username"
+                  placeholder="name"
+                  value={this.state.name}
+                  onChange={this.onChangeName}
+                  validations={[required, vname]}
+                />
+              </div>
               <div className="form-group">
                 {/* <label htmlFor="username">Username</label> */}
                 <Input

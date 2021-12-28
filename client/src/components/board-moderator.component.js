@@ -8,25 +8,25 @@ export default class BoardModerator extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
     };
   }
 
   componentDidMount() {
     UserService.getModeratorBoard().then(
-      response => {
+      (response) => {
         this.setState({
-          content: response.data
+          content: response.data,
         });
       },
-      error => {
+      (error) => {
         this.setState({
           content:
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
             error.message ||
-            error.toString()
+            error.toString(),
         });
 
         if (error.response && error.response.status === 401) {
@@ -38,7 +38,7 @@ export default class BoardModerator extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="card card-containerMax">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
         </header>
