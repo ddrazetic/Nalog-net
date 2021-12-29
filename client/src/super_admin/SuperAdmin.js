@@ -19,7 +19,7 @@ const SuperAdmin = () => {
           backgroundColor: "rgba(33,150,243,255)",
           fontWeight: "600",
         }}
-        to="/home"
+        to="/"
       >
         HOME
       </Link>

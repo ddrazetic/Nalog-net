@@ -81,7 +81,7 @@ class App extends Component {
                   expand="sm"
                 >
                   <Container>
-                    <Navbar.Brand className="navTitle" href="/home">
+                    <Navbar.Brand className="navTitle" href="/">
                       Nalog-net
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -91,7 +91,8 @@ class App extends Component {
                     >
                       <Nav className="me-auto ">
                         <NavLink
-                          to={"/home"}
+                          exact
+                          to={"/"}
                           className="nav-link"
                           activeClassName="nav_link--active"
                         >
@@ -176,7 +177,7 @@ class App extends Component {
 
                 <div className="">
                   <Switch>
-                    <Route exact path={["/", "/home"]} component={Home} />
+                    <Route exact path={["/"]} component={Home} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/profile" component={Profile} />

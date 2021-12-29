@@ -31,11 +31,11 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="card card-containerMax">
-        <header>
-          <h3>{this.state.content}</h3>
-        </header>
-        <img src={Homepage} alt="homepage"></img>
+      <div className="card card-containerMax containerHome">
+        <div className="imageHome">
+          <img src={Homepage} alt="homepage"></img>
+        </div>
+        <h1 className="textHome">{this.state.content}</h1>
       </div>
     );
   }
