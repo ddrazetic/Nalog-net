@@ -18,9 +18,9 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-// db.sequelize.sync({ force: false, alter: true });
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.order = require("../models/order.model.js")(sequelize, Sequelize);
 db.user_role = sequelize.define(
   "user_roles",
   {
@@ -36,8 +36,6 @@ db.user_role = sequelize.define(
     timestamps: false,
   }
 );
-
-// queryInterface.addColumn("users", "name", { type: DataTypes.STRING });
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",

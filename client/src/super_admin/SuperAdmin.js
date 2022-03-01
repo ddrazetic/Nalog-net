@@ -1,5 +1,5 @@
 import React from "react";
-import { Admin, Resource } from "react-admin";
+import { Admin, Resource, Title } from "react-admin";
 import UserList from "./UserList.js";
 import simpleRestProvider from "ra-data-simple-rest";
 import UserEdit from "./UserEdit";
@@ -24,7 +24,8 @@ const SuperAdmin = () => {
         HOME
       </Link>
       <Admin dataProvider={simpleRestProvider("http://localhost:8080")}>
-        <Resource name="userss" list={UserList} edit={UserEdit} />
+        <Title title=" Nalog-net " />
+        <Resource name="users" list={UserList} edit={UserEdit} />
       </Admin>
     </div>
   );

@@ -1,10 +1,13 @@
 import React from "react";
-import { Edit, SimpleForm, SelectInput } from "react-admin";
+import { Edit, SimpleForm, SelectInput, TextField } from "react-admin";
 const UserEdit = (props) => {
   return (
     <div>
-      <Edit {...props}>
+      <Edit {...props} title="Edit role">
         <SimpleForm>
+          <TextField disabled source="name" />
+          <TextField disabled source="username" />
+          <TextField disabled source="email" />
           <SelectInput
             source="roleId"
             choices={[

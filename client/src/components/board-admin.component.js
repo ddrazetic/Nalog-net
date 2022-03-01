@@ -39,9 +39,14 @@ export default class BoardAdmin extends Component {
   render() {
     return (
       <div className="card card-containerMax">
-        <header className="jumbotron">
+        <header>
           <h3>{this.state.content}</h3>
         </header>
+        {this.state.content === "Admin Content." ? (
+          <p>pristup dozvoljen</p>
+        ) : (
+          <p>pristup odbijen</p>
+        )}
       </div>
     );
   }

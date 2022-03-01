@@ -19,8 +19,8 @@ function UserList(props) {
         <TextField source="roles.name" label="Role" />
         <TextField source="roles.user_roles.roleId" label="roleUserId" />
 
-        <EditButton basePath="/userss" />
-        <DeleteButton basePath="/userss" />
+        <EditButton basePath="/users" />
+        <DeleteButton basePath="/users" />
       </Datagrid>
     </List>
   );

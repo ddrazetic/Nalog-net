@@ -71,134 +71,129 @@ class App extends Component {
       <div>
         <Switch>
           <Route path="/superadmin" component={SuperAdmin} />
-          <Route
-            path="/"
-            render={() => (
-              <>
-                <Navbar
-                  className="navShadow"
-                  style={{ backgroundColor: "white" }}
-                  expand="sm"
-                >
-                  <Container>
-                    <Navbar.Brand className="navTitle" href="/">
-                      Nalog-net
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse
-                      className="navLinks"
-                      id="basic-navbar-nav "
-                    >
-                      <Nav className="me-auto ">
+          <Route path="/">
+            <>
+              <Navbar
+                className="navShadow"
+                style={{ backgroundColor: "white" }}
+                expand="sm"
+              >
+                <Container>
+                  <Navbar.Brand className="navTitle">Nalog-net</Navbar.Brand>
+                  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                  <Navbar.Collapse className="navLinks" id="basic-navbar-nav ">
+                    <Nav className="me-auto ">
+                      <NavLink
+                        exact
+                        to={"/"}
+                        className="nav-link"
+                        activeClassName="nav_link--active"
+                      >
+                        Home
+                      </NavLink>
+
+                      {showModeratorBoard && (
                         <NavLink
-                          exact
-                          to={"/"}
+                          to={"/mod"}
                           className="nav-link"
                           activeClassName="nav_link--active"
                         >
-                          Home
+                          Moderator Board
+                        </NavLink>
+                      )}
+
+                      {showAdminBoard && (
+                        <NavLink
+                          to={"/admin"}
+                          activeClassName="nav_link--active"
+                          className="nav-link"
+                        >
+                          Admin Board
+                        </NavLink>
+                      )}
+
+                      {showUserBoard && (
+                        <NavLink
+                          to={"/user"}
+                          className="nav-link"
+                          activeClassName="nav_link--active"
+                        >
+                          User
+                        </NavLink>
+                      )}
+                    </Nav>
+
+                    {currentUser ? (
+                      <Nav className="ml-auto">
+                        <NavLink
+                          to={"/profile"}
+                          className="nav-link"
+                          activeClassName="nav_link--active"
+                        >
+                          {currentUser.username}
                         </NavLink>
 
-                        {showModeratorBoard && (
-                          <NavLink
-                            to={"/mod"}
-                            className="nav-link"
-                            activeClassName="nav_link--active"
-                          >
-                            Moderator Board
-                          </NavLink>
-                        )}
-
-                        {showAdminBoard && (
-                          <NavLink
-                            to={"/admin"}
-                            activeClassName="nav_link--active"
-                            className="nav-link"
-                          >
-                            Admin Board
-                          </NavLink>
-                        )}
-
-                        {showUserBoard && (
-                          <NavLink
-                            to={"/user"}
-                            className="nav-link"
-                            activeClassName="nav_link--active"
-                          >
-                            User
-                          </NavLink>
-                        )}
+                        <a
+                          href="/login"
+                          className="nav-link"
+                          onClick={this.logOut}
+                        >
+                          LogOut
+                        </a>
                       </Nav>
+                    ) : (
+                      <Nav className="ml-auto">
+                        <NavLink
+                          to={"/login"}
+                          className="nav-link"
+                          activeClassName="nav_link--active"
+                        >
+                          Login
+                        </NavLink>
 
-                      {currentUser ? (
-                        <Nav className="ml-auto">
-                          <NavLink
-                            to={"/profile"}
-                            className="nav-link"
-                            activeClassName="nav_link--active"
-                          >
-                            {currentUser.username}
-                          </NavLink>
+                        <NavLink
+                          to={"/register"}
+                          className="nav-link"
+                          activeClassName="nav_link--active"
+                        >
+                          Sign Up
+                        </NavLink>
 
-                          <a
-                            href="/login"
-                            className="nav-link"
-                            onClick={this.logOut}
-                          >
-                            LogOut
-                          </a>
-                        </Nav>
-                      ) : (
-                        <Nav className="ml-auto">
-                          <NavLink
-                            to={"/login"}
-                            className="nav-link"
-                            activeClassName="nav_link--active"
-                          >
-                            Login
-                          </NavLink>
+                        <NavLink to={"/superadmin"} className="nav-link">
+                          Super admin
+                        </NavLink>
+                      </Nav>
+                    )}
+                  </Navbar.Collapse>
+                </Container>
+              </Navbar>
 
-                          <NavLink
-                            to={"/register"}
-                            className="nav-link"
-                            activeClassName="nav_link--active"
-                          >
-                            Sign Up
-                          </NavLink>
+              <div className="">
+                <Switch>
+                  <Route exact path={["/"]} component={Home} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/register" component={Register} />
+                  <Route exact path="/profile" component={Profile} />
 
-                          <NavLink to={"/superadmin"} className="nav-link">
-                            Super admin
-                          </NavLink>
-                        </Nav>
-                      )}
-                    </Navbar.Collapse>
-                  </Container>
-                </Navbar>
-
-                <div className="">
-                  <Switch>
-                    <Route exact path={["/"]} component={Home} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/register" component={Register} />
-                    <Route exact path="/profile" component={Profile} />
-
-                    <Route
-                      path="/user"
-                      component={showUserBoard && <BoardUser />}
-                    />
-                    <Route
-                      path="/mod"
-                      component={showModeratorBoard && BoardModerator}
-                    />
-                    <Route
-                      path="/admin"
-                      component={showAdminBoard && BoardAdmin}
-                    />
-                  </Switch>
-                </div>
-              </>
-            )}
-          />
+                  <Route
+                    path="/user"
+                    component={BoardUser}
+                    // component={showUserBoard && BoardUser}
+                  ></Route>
+                  <Route
+                    path="/mod"
+                    component={BoardModerator}
+                    // component={showModeratorBoard && BoardModerator}
+                  />
+                  <Route
+                    path="/admin"
+                    component={BoardAdmin}
+                    // component={showAdminBoard && BoardAdmin}
+                  />
+                </Switch>
+              </div>
+            </>
+          </Route>
         </Switch>
       </div>
     );
