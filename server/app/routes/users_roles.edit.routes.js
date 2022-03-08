@@ -24,6 +24,26 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/moderators", (req, res) => {
+    res.set({
+      "Access-Control-Expose-Headers": "Content-Range",
+      "Content-Range": "posts 0-30/30",
+      "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+    });
+    User.findAll({
+      raw: true,
+      include: [
+        {
+          model: Role,
+          through: "user_roles",
+          where: { id: 2 },
+        },
+      ],
+    }).then(function (result) {
+      res.json(result);
+    });
+  });
+
   app.get("/users/:id", (req, res) => {
     const id = req.params.id;
     User.findOne({

@@ -1,9 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
   const Order = sequelize.define("order", {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+    title: {
+      type: Sequelize.STRING,
+    },
+    description: {
+      type: Sequelize.STRING,
     },
     editId: {
       type: Sequelize.INTEGER,
