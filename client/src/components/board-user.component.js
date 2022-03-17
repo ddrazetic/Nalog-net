@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Order from "./order.component";
+import OrderList from "./orders-list.component";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 
@@ -8,12 +9,15 @@ export default class BoardUser extends Component {
     super(props);
 
     this.state = {
+      currentUser: props.currentUser,
+
       content: "",
       showing: false,
     };
   }
 
   componentDidMount() {
+    // console.log(this.state.currentUser);
     UserService.getUserBoard().then(
       (response) => {
         this.setState({
@@ -38,7 +42,7 @@ export default class BoardUser extends Component {
   }
 
   render() {
-    const { showing } = this.state;
+    const { showing, currentUser } = this.state;
     return (
       <div className="card card-containerMax">
         <header>{/* <h3>{this.state.content}</h3> */}</header>
@@ -53,7 +57,7 @@ export default class BoardUser extends Component {
               {showing ? "Zatvori" : "Dodaj nalog"}
             </button>
             {showing ? <Order /> : null}
-            {/* <button className="buttonAddOrder">Dodaj nalog</button> */}
+            <OrderList currentUser={currentUser} />
           </>
         ) : (
           <p>pristup odbijen</p>

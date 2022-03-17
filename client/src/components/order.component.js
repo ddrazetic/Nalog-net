@@ -53,6 +53,7 @@ export default class Order extends Component {
       nameWorker: currentUser.name,
       editId: currentUser.id,
     });
+
     ModeratorsDataService.getAll()
       .then((response) => {
         this.setState({

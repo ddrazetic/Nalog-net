@@ -66,7 +66,7 @@ class App extends Component {
   render() {
     const { currentUser, showModeratorBoard, showUserBoard, showAdminBoard } =
       this.state;
-
+    // this.state.userId && console.log(this.state.userId);
     return (
       <div>
         <Switch>
@@ -177,9 +177,11 @@ class App extends Component {
 
                   <Route
                     path="/user"
-                    component={BoardUser}
+                    // component={BoardUser}
                     // component={showUserBoard && BoardUser}
-                  ></Route>
+                  >
+                    {currentUser && <BoardUser currentUser={currentUser} />}
+                  </Route>
                   <Route
                     path="/mod"
                     component={BoardModerator}
