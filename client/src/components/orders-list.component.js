@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import OrderDataService from "../services/order.service";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import EditOrder from "./edit-order.component";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();
   const [currentOrder, setCurrentOrder] = useState();
   const [currentIndex, setCurrentIndex] = useState();
+  const [showing, setShowing] = useState(false);
   // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
@@ -76,6 +78,10 @@ const OrderList = (props) => {
                 <strong>Title:</strong>
               </label>{" "}
               {currentOrder.title}
+              <label>
+                <strong>Title:</strong>
+              </label>{" "}
+              {currentOrder.roleEditId}
             </div>
             <div>
               <label>
@@ -90,7 +96,8 @@ const OrderList = (props) => {
               {currentOrder.published ? "Published" : "Pending"}
             </div>
 
-            <Link to={"/orders/" + currentOrder.id}>Edit</Link>
+            {/* <Link to={"/orders/" + currentOrder.id}>Edit</Link> */}
+            <button onClick={() => setShowing(!showing)}>Edit</button>
           </div>
         ) : (
           <div>
@@ -99,6 +106,9 @@ const OrderList = (props) => {
           </div>
         )}
       </div>
+      {showing && currentOrder ? (
+        <EditOrder currentOrder={currentOrder} />
+      ) : null}
     </div>
   );
 };

@@ -33,6 +33,10 @@ module.exports = (sequelize, Sequelize) => {
     addition: {
       type: Sequelize.STRING,
     },
+    roleEditId: {
+      type: Sequelize.INTEGER,
+      defaultValue: 2,
+    },
   });
   // User.findAll().then(function (result) {
   //   console.log(result);
