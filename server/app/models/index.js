@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
@@ -5,7 +7,9 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   host: config.HOST,
   dialect: config.dialect,
   operatorsAliases: false,
-
+  dialectOptions: {
+    multipleStatements: true,
+  },
   pool: {
     max: config.pool.max,
     min: config.pool.min,
@@ -21,6 +25,7 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.order = require("../models/order.model.js")(sequelize, Sequelize);
+db.country = require("../models/country.model.js")(sequelize, Sequelize);
 db.user_role = sequelize.define(
   "user_roles",
   {
@@ -47,6 +52,14 @@ db.user.belongsToMany(db.role, {
   primaryKey: "userId",
   otherKey: "roleId",
 });
+
+var sql_string = fs.readFileSync(
+  "./app/models/putni_nalozi_drzave.sql",
+  "utf8"
+);
+
+// console.log(sql_string);
+db.sequelize.query(sql_string);
 
 db.ROLES = ["user", "admin", "moderator"];
 

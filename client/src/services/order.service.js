@@ -5,6 +5,9 @@ class OrderDataService {
   getAll() {
     return axios.get(API_URL + "/orders");
   }
+  getAllCountries() {
+    return axios.get(API_URL + "/countries");
+  }
   get(id) {
     return axios.get(`${API_URL}/orders/${id}`);
   }

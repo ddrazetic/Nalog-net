@@ -1,5 +1,6 @@
 const db = require("../models");
 const Order = db.order;
+const Country = db.country;
 const Op = db.Sequelize.Op;
 // Create and Save a new Order
 exports.create = (req, res) => {
@@ -138,6 +139,19 @@ exports.deleteAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all orders.",
+      });
+    });
+};
+
+// PUTNI NALOZI DRZAVE
+exports.findAllCountries = (req, res) => {
+  Country.findAll()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving orders.",
       });
     });
 };

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import OrderDataService from "../services/order.service";
+// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+// import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 // import { Link } from "react-router-dom";
 import EditOrder from "./edit-order.component";
+// import Table from "react-bootstrap/Table";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();
@@ -11,6 +16,7 @@ const OrderList = (props) => {
   // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
+    props.childFunc.current = refreshList; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const retrieveOrders = () => {
     OrderDataService.getAll()
@@ -25,11 +31,42 @@ const OrderList = (props) => {
     retrieveOrders();
     setCurrentOrder(null);
     setCurrentIndex(-1);
+    setShowing(false);
   };
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
     setCurrentIndex(index);
+    setShowing(false);
   };
+  const columns = [
+    {
+      dataField: "id",
+      text: "Br.naloga",
+    },
+    {
+      dataField: "date",
+      text: "Datum",
+    },
+    {
+      dataField: "nameModerator",
+      text: "Ime voditelja",
+    },
+    {
+      dataField: "countryDestination",
+      text: "Zemlja",
+    },
+  ];
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      // console.log(`clicked on row with index: ${row.id}`);
+      setActiveOrder(row, row.id);
+    },
+  };
+
+  const rowClasses = (row, rowIndex) => {
+    if (row.id === currentIndex) return "active";
+  };
+
   // const removeAllOrders = () => {
   //   OrderDataService.deleteAll()
   //     .then((response) => {
@@ -41,218 +78,167 @@ const OrderList = (props) => {
   //     });
   // };
   return (
-    <div className="list row">
-      <div className="col-md-6">
-        <h4>Lista naloga</h4>
+    <>
+      <div className="list row tableOrders">
+        <div className="col-md-8 ">
+          <h4>Lista naloga</h4>
+          <BootstrapTable
+            keyField="id"
+            data={orders ? orders : []}
+            columns={columns}
+            striped
+            bordered
+            hover
+            pagination={paginationFactory()}
+            rowEvents={rowEvents}
+            rowClasses={rowClasses}
+          />
 
-        <ul className="list-group">
-          {orders &&
-            orders
-              .filter((order) => order.editId === props.currentUser.id)
-              .map((order, index) => {
-                return (
-                  <li
-                    className={
-                      "list-group-item " +
-                      (index === currentIndex ? "active" : "")
-                    }
-                    onClick={() => setActiveOrder(order, index)}
-                    key={index}
+          {/* <Table responsive="md" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th style={{ width: "100px" }}>br. Naloga</th>
+                <th>Datum</th>
+                <th>Ime voditelja</th>
+                <th>Zemlja putovanja</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders &&
+                orders
+                  .filter((order) => order.editId === props.currentUser.id)
+                  .map((order, index) => {
+                    return (
+                      <tr
+                        className={index === currentIndex ? "active" : ""}
+                        onClick={() => setActiveOrder(order, index)}
+                        key={index}
+                      >
+                        <td>{order.id}</td>
+                        <td>{order.date}</td>
+                        <td>{order.nameModerator}</td>
+                        <td>{order.countryDestination}</td>
+                      </tr>
+                    );
+                  })}
+            </tbody>
+          </Table> */}
+
+          <button className="m-3 btn btn-sm btn-primary" onClick={refreshList}>
+            Osvježite listu
+          </button>
+        </div>
+        <div className="col-md-3">
+          {currentOrder ? (
+            <div>
+              <h4>Nalog br. {currentOrder.id}</h4>
+              <div>
+                <label>
+                  <strong>Naslov: </strong>
+                </label>{" "}
+                {currentOrder.title}
+              </div>
+              <div>
+                <label>
+                  <strong>Opis:</strong>
+                </label>{" "}
+                {currentOrder.description}
+              </div>
+              <div>
+                <label>
+                  <strong>Ime djelatnika:</strong>
+                </label>{" "}
+                {currentOrder.nameWorker}
+              </div>
+              <div>
+                <label>
+                  <strong>Ime voditelja jedinice:</strong>
+                </label>{" "}
+                {currentOrder.nameModerator}
+              </div>
+              <div>
+                <label>
+                  <strong>Zemlja putovanja:</strong>
+                </label>{" "}
+                {currentOrder.countryDestination}
+              </div>
+              <div>
+                <label>
+                  <strong>Mjesto putovanja:</strong>
+                </label>{" "}
+                {currentOrder.placeDestination}
+              </div>
+              <div>
+                <label>
+                  <strong>Dnevnica:</strong>
+                </label>{" "}
+                {currentOrder.salary}
+              </div>
+              <div>
+                <label>
+                  <strong>Datum početka:</strong>
+                </label>{" "}
+                {currentOrder.date}
+              </div>
+              <div>
+                <label>
+                  <strong>Broj dana boravka:</strong>
+                </label>{" "}
+                {currentOrder.numberOfDays}
+              </div>
+              <div>
+                <label>
+                  <strong>Dodatno:</strong>
+                </label>{" "}
+                {currentOrder.addition}
+              </div>
+
+              <div>
+                <label>
+                  <strong>Status:</strong>
+                </label>{" "}
+                {currentOrder.roleEditId}
+              </div>
+              {/* OVO SE TREBA PROMIJENITI U 1 KASNIJE */}
+              {currentOrder.roleEditId === 2 ? (
+                <>
+                  <button
+                    className={`m-3 btn btn-sm ${
+                      !showing ? "btn-primary" : "btn-danger"
+                    }  `}
+                    onClick={() => {
+                      setShowing(!showing);
+                      // window.location("#editOrder");
+                    }}
                   >
-                    {order.title + order.editId}
-                  </li>
-                );
-              })}
-        </ul>
-
-        <button className="m-3 btn btn-sm btn-danger" onClick={refreshList}>
-          Refresh list
-        </button>
+                    {showing ? (
+                      "Zatvorite formu za uređivanje"
+                    ) : (
+                      <a className="scrollButton" href="#editOrder">
+                        Otvorite formu za uređivanje
+                      </a>
+                    )}
+                  </button>
+                </>
+              ) : (
+                <p style={{ color: "red" }}>
+                  Ovaj nalog se ne možete uređivati!
+                </p>
+              )}
+            </div>
+          ) : (
+            <div>
+              <br />
+              <p>Kliknite na nalog...</p>
+            </div>
+          )}
+        </div>
+        {showing && currentOrder ? (
+          <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
+        ) : null}
       </div>
-      <div className="col-md-6">
-        {currentOrder ? (
-          <div>
-            <h4>order</h4>
-            <div>
-              <label>
-                <strong>Title:</strong>
-              </label>{" "}
-              {currentOrder.title}
-              <label>
-                <strong>Title:</strong>
-              </label>{" "}
-              {currentOrder.roleEditId}
-            </div>
-            <div>
-              <label>
-                <strong>Description:</strong>
-              </label>{" "}
-              {currentOrder.description}
-            </div>
-            <div>
-              <label>
-                <strong>Status:</strong>
-              </label>{" "}
-              {currentOrder.published ? "Published" : "Pending"}
-            </div>
-
-            {/* <Link to={"/orders/" + currentOrder.id}>Edit</Link> */}
-            <button onClick={() => setShowing(!showing)}>Edit</button>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Please click on a order...</p>
-          </div>
-        )}
-      </div>
-      {showing && currentOrder ? (
-        <EditOrder currentOrder={currentOrder} />
-      ) : null}
-    </div>
+    </>
   );
 };
 
 export default OrderList;
-
-// export default class OrderList extends Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.retrieveTutorials = this.retrieveTutorials.bind(this);
-//     this.refreshList = this.refreshList.bind(this);
-//     this.setActiveTutorial = this.setActiveTutorial.bind(this);
-//     this.removeAllTutorials = this.removeAllTutorials.bind(this);
-
-//     this.state = {
-//       currentUser: props.currentUser,
-//       tutorials: [],
-//       currentTutorial: null,
-//       currentIndex: -1,
-//       searchTitle: "",
-//     };
-//   }
-
-//   componentDidMount() {
-//     this.retrieveTutorials();
-//     // console.table(this.state.tutorials);
-//   }
-
-//   retrieveTutorials() {
-//     OrderDataService.getAll()
-//       .then((response) => {
-//         this.setState({
-//           tutorials: response.data,
-//         });
-//         // console.log(response.data);
-//       })
-//       .catch((e) => {
-//         console.log(e);
-//       });
-//   }
-
-//   refreshList() {
-//     this.retrieveTutorials();
-//     this.setState({
-//       currentTutorial: null,
-//       currentIndex: -1,
-//     });
-//   }
-
-//   setActiveTutorial(tutorial, index) {
-//     this.setState({
-//       currentTutorial: tutorial,
-//       currentIndex: index,
-//     });
-//   }
-
-//   removeAllTutorials() {
-//     OrderDataService.deleteAll()
-//       .then((response) => {
-//         console.log(response.data);
-//         this.refreshList();
-//       })
-//       .catch((e) => {
-//         console.log(e);
-//       });
-//   }
-
-//   render() {
-//     const { tutorials, currentTutorial, currentIndex, currentUser } =
-//       this.state;
-
-//     return (
-//       <div className="list row">
-//         <div className="col-md-6">
-//           <h4>Lista naloga</h4>
-//           {/* <div>
-//             {tutorials
-//               .filter((tutorial) => tutorial.editId == "11")
-//               .map((filteredPerson) => (
-//                 <li>{filteredPerson.title}</li>
-//               ))}
-//           </div> */}
-
-//           <ul className="list-group">
-//             {tutorials &&
-//               tutorials
-//                 .filter((tutorial) => tutorial.editId === currentUser.id)
-//                 .map((tutorial, index) => {
-//                   return (
-//                     <li
-//                       className={
-//                         "list-group-item " +
-//                         (index === currentIndex ? "active" : "")
-//                       }
-//                       onClick={() => this.setActiveTutorial(tutorial, index)}
-//                       key={index}
-//                     >
-//                       {tutorial.title + tutorial.editId}
-//                     </li>
-//                   );
-//                 })}
-//           </ul>
-
-//           <button
-//             className="m-3 btn btn-sm btn-danger"
-//             onClick={this.refreshList}
-//           >
-//             Refresh list
-//           </button>
-//         </div>
-//         <div className="col-md-6">
-//           {currentTutorial ? (
-//             <div>
-//               <h4>Tutorial</h4>
-//               <div>
-//                 <label>
-//                   <strong>Title:</strong>
-//                 </label>{" "}
-//                 {currentTutorial.title}
-//               </div>
-//               <div>
-//                 <label>
-//                   <strong>Description:</strong>
-//                 </label>{" "}
-//                 {currentTutorial.description}
-//               </div>
-//               <div>
-//                 <label>
-//                   <strong>Status:</strong>
-//                 </label>{" "}
-//                 {currentTutorial.published ? "Published" : "Pending"}
-//               </div>
-
-//               <Link to={"/tutorials/" + currentTutorial.id}>Edit</Link>
-//             </div>
-//           ) : (
-//             <div>
-//               <br />
-//               <p>Please click on a Tutorial...</p>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
