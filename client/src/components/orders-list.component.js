@@ -21,7 +21,9 @@ const OrderList = (props) => {
   const retrieveOrders = () => {
     OrderDataService.getAll()
       .then((response) => {
-        setOrders(response.data); // console.log(response.data);
+        setOrders(
+          response.data.filter((order) => order.editId === props.currentUser.id)
+        ); // console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -80,7 +82,7 @@ const OrderList = (props) => {
   return (
     <>
       <div className="list row tableOrders">
-        <div className="col-md-8 ">
+        <div className="col-md-8 table-responsive ">
           <h4>Lista naloga</h4>
           <BootstrapTable
             keyField="id"
@@ -89,6 +91,7 @@ const OrderList = (props) => {
             striped
             bordered
             hover
+            responsive="sm"
             pagination={paginationFactory()}
             rowEvents={rowEvents}
             rowClasses={rowClasses}
@@ -124,11 +127,14 @@ const OrderList = (props) => {
             </tbody>
           </Table> */}
 
-          <button className="m-3 btn btn-sm btn-primary" onClick={refreshList}>
+          <button
+            className="buttonAddOrder buttonAddOrderSmall"
+            onClick={refreshList}
+          >
             Osvježite listu
           </button>
         </div>
-        <div className="col-md-3">
+        <div className="col-md-4 ">
           {currentOrder ? (
             <div>
               <h4>Nalog br. {currentOrder.id}</h4>
@@ -172,7 +178,7 @@ const OrderList = (props) => {
                 <label>
                   <strong>Dnevnica:</strong>
                 </label>{" "}
-                {currentOrder.salary}
+                {currentOrder.salary} HRK
               </div>
               <div>
                 <label>
@@ -203,8 +209,8 @@ const OrderList = (props) => {
               {currentOrder.roleEditId === 2 ? (
                 <>
                   <button
-                    className={`m-3 btn btn-sm ${
-                      !showing ? "btn-primary" : "btn-danger"
+                    className={`buttonAddOrder  buttonAddOrderSmall ${
+                      !showing ? "" : "closeButton"
                     }  `}
                     onClick={() => {
                       setShowing(!showing);
@@ -233,10 +239,10 @@ const OrderList = (props) => {
             </div>
           )}
         </div>
-        {showing && currentOrder ? (
-          <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
-        ) : null}
       </div>
+      {showing && currentOrder ? (
+        <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
+      ) : null}
     </>
   );
 };

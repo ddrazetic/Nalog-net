@@ -1,7 +1,23 @@
-import React, { useState, useEffect } from "react";
-import "react-popupbox/dist/react-popupbox.css";
+import React, { useState, useEffect, useRef } from "react";
+// import "react-popupbox/dist/react-popupbox.css";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import Textarea from "react-validation/build/textarea";
+import Select from "react-validation/build/select";
+import CheckButton from "react-validation/build/button";
+
 import OrderDataService from "../services/order.service";
 import ModeratorsDataService from "../services/moderators.service";
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Obavezno popuniti ovo polje!
+      </div>
+    );
+  }
+};
 
 const Order = (props) => {
   // const [currentUser, setCurrentUser] = useState();
@@ -18,8 +34,12 @@ const Order = (props) => {
   const [date, setDate] = useState();
   const [numberOfDays, setNumberOfDays] = useState();
   const [addition, setAddition] = useState();
-  const [errorInput, setErrorInput] = useState();
+
+  // const [successful, setSuccessful] = useState();
   const [submitted, setSubmitted] = useState();
+  // const [message, setMessage] = useState();
+  const form = useRef();
+  const checkBtn = useRef();
   /* eslint-disable no-unused-vars */
   const [id, setId] = useState();
   useEffect(() => {
@@ -58,12 +78,7 @@ const Order = (props) => {
   const onChangeDescription = (e) => {
     setDescription(e.target.value);
   };
-  // const onChangeeditId = (e) => {
-  //   setEditId(e.target.value);
-  // };
-  // const onChangenameWorker = (e) => {
-  //   setNameWorker(e.target.value);
-  // };
+
   const onChangenameModerator = (e) => {
     setNameModerator(e.target.value);
   };
@@ -71,11 +86,17 @@ const Order = (props) => {
     setCountryDestination(e.target.value);
 
     setSalary(
-      parseInt(
-        countries
-          .filter((country) => country.naziv === e.target.value)
-          .map((country) => parseInt(country.dnevnice))
-      )
+      countries
+        .filter((country) => country.naziv === e.target.value)
+        .map((country) => {
+          if (country.valuta === "USD") {
+            return country.dnevnice * 6.91;
+          } else if (country.valuta === "EUR") {
+            return country.dnevnice * 7.55;
+          } else {
+            return country.dnevnice;
+          }
+        })
     );
     // console.log(salary);
   };
@@ -94,29 +115,13 @@ const Order = (props) => {
   const onChangeaddition = (e) => {
     setAddition(e.target.value);
   };
-  const saveOrder = () => {
-    if (
-      !(
-        (
-          title &&
-          // description && // this.state.editId &&
-          // this.state.nameWorker &&
-          // nameModerator &&
-          countryDestination
-        )
-        // placeDestination &&
-        // // salary &&
-        // date &&
-        // numberOfDays &&
-        // !isNaN(numberOfDays)
-      )
-    ) {
-      setErrorInput(
-        "Sva polja moraju biti popunjena i dani boravka moraju biti broj!"
-      );
-    } else {
-      setSubmitted(true);
+  const saveOrder = (e) => {
+    e.preventDefault();
+    // setMessage("");
+    form.current.validateAll();
 
+    if (checkBtn.current.context._errors.length === 0) {
+      setSubmitted(true);
       var data = {
         title: title,
         description: description,
@@ -146,6 +151,7 @@ const Order = (props) => {
           setNumberOfDays(response.data.numberOfDays);
           setAddition(response.data.addition);
           console.log(response.data);
+          // setSuccessful(true);
           if (response.data) {
             props.childFunc();
           }
@@ -167,12 +173,11 @@ const Order = (props) => {
     setDate("");
     setNumberOfDays("");
     setAddition("");
-    setErrorInput("");
   };
 
   return (
     <>
-      <div className="submit-form">
+      <div className="submit-form form-padding">
         {submitted ? (
           <div>
             <h4>Uspješno je dodan nalog!</h4>
@@ -181,56 +186,65 @@ const Order = (props) => {
             </button>
           </div>
         ) : (
-          <div>
+          <Form
+            className="formInputOrder"
+            onSubmit={saveOrder}
+            ref={(c) => {
+              form.current = c;
+            }}
+          >
             <h1 className="headerOrder">Zahtjev za izradu putnog naloga:</h1>
-            <div className="form-group">
+            <div className="form-group1 form-group">
               <label htmlFor="title">Naslov:</label>
-              <input
+              <Input
                 type="text"
-                className="form-control"
+                className="form-control  "
                 id="title"
-                required="required"
+                // required="required"
                 placeholder="unesite naslov"
                 value={title || ""}
                 onChange={onChangeTitle}
                 name="title"
+                validations={[required]}
               />
             </div>
             <div className="form-group">
               <label htmlFor="description">Opis:</label>
-              <input
+              <Textarea
                 type="text"
+                rows={3}
                 className="form-control"
                 id="description"
-                required
+                // required
                 placeholder="opišite putovanje"
                 value={description || ""}
                 onChange={onChangeDescription}
                 name="description"
+                validations={[required]}
               />
             </div>
             <div className="form-group">
               <label htmlFor="editId">Id djelatnika:</label>
-              <input
+              <Input
                 type="text"
                 className="form-control"
                 id="editId"
-                required
+                // required
                 readOnly
-                defaultValue={editId}
+                value={editId}
                 // onChange={onChangeeditId}
                 name="editId"
               />
             </div>
             <div className="form-group">
               <label htmlFor="nameWorker">Ime i prezime djelatnika:</label>
-              <input
+              <Input
                 type="text"
                 className="form-control"
                 id="description"
                 required
                 readOnly
-                defaultValue={nameWorker}
+                value={nameWorker}
                 // onChange={onChangenameWorker}
                 name="description"
               />
@@ -239,24 +253,26 @@ const Order = (props) => {
               <label htmlFor="nameModerator">
                 Ime i prezime voditelja jedinice:
               </label>
-              <select
+              <Select
                 className="form-control dropdown-toggle"
                 placeholder="odaberite voditelja jedinice"
                 value={nameModerator || ""}
                 onChange={onChangenameModerator}
+                validations={[required]}
               >
                 <option></option>
                 {moderators.map((eachUser, i) => (
                   <option key={i}>{eachUser.name}</option>
                 ))}
-              </select>
+              </Select>
             </div>
 
             <div className="form-group">
               <label htmlFor="countryDestination">Zemlja putovanja:</label>
-              <select
+              <Select
                 className="form-control dropdown-toggle"
                 placeholder="odaberite zemlju putovanja"
+                validations={[required]}
                 value={countryDestination || ""}
                 onChange={onChangecountryDestination}
               >
@@ -264,15 +280,16 @@ const Order = (props) => {
                 {countries.map((eachCountry, i) => (
                   <option key={i}>{eachCountry.naziv}</option>
                 ))}
-              </select>
+              </Select>
             </div>
             <div className="form-group">
               <label htmlFor="placeDestination">Mjesto putovanja:</label>
-              <input
+              <Input
                 type="text"
                 className="form-control"
                 id="title"
-                required
+                // required
+                validations={[required]}
                 placeholder="unesite mjesto putovanja"
                 value={placeDestination || ""}
                 onChange={onChangeplaceDestination}
@@ -280,59 +297,29 @@ const Order = (props) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="salary">Dnevnica:</label>
-              <input
-                type="text"
+              <label htmlFor="salary">Dnevnica (HRK):</label>
+              <Input
+                type="number"
                 className="form-control"
                 id="description"
-                required
+                // required
                 placeholder="dnevnica"
                 // value={salary || ""}
                 value={salary || ""}
                 readOnly
-                // {countries
-                //   .filter((country) => country.naziv === countryDestination)
-                //   .map((country) => country.dnevnice)}
-                // onChange={onChangesalary}
                 name="description"
-              >
-                {/* {countries
-                  .find((country) => country.naziv === countryDestination)
-                  
-                   return country.dnevnice
-                } */}
-              </input>
+              ></Input>
             </div>
-            {/* <div className="form-group">
-              <label htmlFor="salary">Dnevnica:</label>
-              <select
-                type="text"
-                className="form-control"
-                id="description"
-                required
-                placeholder="dnevnica"
-                // value={salary || ""}
-                value={salary || ""}
-                onChange={onChangesalary}
-                name="description"
-              >
-                <option>izaberi</option>
-                {countries
-                  .filter((country) => country.naziv === countryDestination)
-                  .map((country) => (
-                    <option key={country.id}>{country.dnevnice}</option>
-                  ))}
-              </select>
-            </div> */}
 
             <div className="form-group">
               <label htmlFor="date">Datum početka:</label>
-              <input
+              <Input
                 type="date"
                 className="form-control"
                 id="title"
-                required
+                // required
                 placeholder="odaberite datum početka putovanja"
+                validations={[required]}
                 value={date || ""}
                 onChange={onChangedate}
                 name="title"
@@ -340,11 +327,12 @@ const Order = (props) => {
             </div>
             <div className="form-group">
               <label htmlFor="numberOfDays">Broj dana boravka:</label>
-              <input
+              <Input
                 type="number"
                 className="form-control"
                 id="description"
-                required
+                // required
+                validations={[required]}
                 placeholder="unesite broj dana boravka"
                 value={numberOfDays || ""}
                 onChange={onChangenumberOfDays}
@@ -353,24 +341,34 @@ const Order = (props) => {
             </div>
             <div className="form-group">
               <label htmlFor="addition">Dodatno (opcionalno):</label>
-              <input
+              <Textarea
                 type="text"
                 className="form-control"
+                rows={3}
                 id="description"
-                required
+                // validations={[required]}
+                // required
                 placeholder="Napišite dodatne stavke vezane uz putovanje"
                 value={addition || ""}
                 onChange={onChangeaddition}
                 name="description"
               />
             </div>
-            <div className={`  ${errorInput ? "errorInput1" : ""}`}>
-              <p>{errorInput}</p>
+
+            <div className="form-group">
+              {" "}
+              <button className="buttonAddOrder">Potvrdi</button>
             </div>
-            <button onClick={saveOrder} className="buttonAddOrder">
-              Potvrdi
-            </button>
-          </div>
+
+            <CheckButton
+              style={{
+                display: "none",
+              }}
+              ref={(c) => {
+                checkBtn.current = c;
+              }}
+            />
+          </Form>
         )}
       </div>
     </>

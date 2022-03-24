@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     salary: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DECIMAL(10, 2),
     },
     date: {
       type: Sequelize.STRING,

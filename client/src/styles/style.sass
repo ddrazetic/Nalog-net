@@ -12,12 +12,12 @@ $primaryShadow: #334b55
     padding: 0
     margin: 0px
 
-.main
-    max-width: 1200px
-    margin: 0 auto
-    margin-top: 2rem
-    background-color: white
-    box-shadow: 5px 5px 10px #3d3c3c
+// .main
+//     max-width: 1200px
+//     margin: 0 auto
+//     margin-top: 2rem
+//     background-color: white
+//     box-shadow: 5px 5px 10px #3d3c3c
 
 body
     background: linear-gradient(90deg, $primaryLightColor, $primaryColor)
@@ -75,8 +75,9 @@ body
     // padding: 20px 25px 30px
     margin: 0 auto 25px
     margin-top: 50px
+    width: 95%
     box-shadow: 5px 5px 10px $primaryShadow
-    border-radius: 8px !important
+    // border-radius: 8px !important
 
 .profile-img-card
     width: 96px
@@ -108,7 +109,7 @@ body
 
 .buttonAddOrder
     display: inline-block
-    width: 150px
+    min-width: 150px
     padding: 10px
     background-color: $primaryColor
     color: white
@@ -121,40 +122,38 @@ body
     margin-bottom: 50px
     margin-top: 40px
     margin-right: 50px
+.buttonAddOrderSmall
+    font-size: 16px
+    padding: 5px
+
+.buttonDeleteOrder
+    margin: 0px
+
 .closeButton
     background-color: #ff2525
-.popupBox
-    width: 1000px
+// .popupBox
+//     width: 1000px
 .submit-form
     background-color: #f5f5f5
     padding: 10px 60px
 
-    .headerOrder
-        margin-bottom: 50px
+.headerOrder
+    margin-bottom: 50px
 
-    .form-group
-        margin-left: auto !important
-        display: flex
-        margin-bottom: 30px
-        // flex-direction: column
-        gap: 50px
-        label
-            color: #000000
-            font-size: 18px
-            // margin-left: auto
-            font-weight: bolder
-            // background-color: blue
-            width: 40%
-            text-align: right
+.form-group
+    margin-bottom: 30px
+    label
+        color: #000000
+        font-size: 18px
+        font-weight: bolder
+        text-align: right
+    .form-control
+        margin-bottom: 15px !important
+        width: 100% !important
 
-            // margin-left: 5%
-        .form-control
-            margin-bottom: 15px
-            max-width: 700px
-            margin-left: auto
-            margin-right: 40px
-            // margin: 0 auto
-            // margin-left: 10%
+.formInputOrder
+    padding: 0 100px
+
 .errorInput1
     background-color: red
     color: white
@@ -168,12 +167,12 @@ body
     box-shadow: 2px 2px 4px $primaryShadow
 
 .active
-    background-color: #afafaf!important
+    background-color: $primaryColor!important
 .tableOrders
     padding: 30px
 .buttonsEdit
     display: flex
-    gap: 30px
+
     justify-content: center
 .scrollButton
     color: white
@@ -184,19 +183,29 @@ select
     -moz-appearance: none
     appearance: none
 
-    background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat 98.5% !important !important
+    background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat 98.5% !important
     background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat calc(100% - 10px) !important
 
-@media screen and (max-width: 900px)
-    .form-group
+@media screen and (max-width:900px)
+    .formInputOrder
+        padding: 0 0
+@media screen and (max-width:600px)
+    .form-padding
+        padding: 10px 10px
 
-        display: flex
-        flex-direction: column
-        gap: 0px !important
-        label
+//     .form-group
 
-            // margin-left: auto
-            font-weight: bolder
-            // background-color: blue
-            width: 100% !important
-            text-align: left !important
+//         display: flex
+//         flex-direction: column
+//         gap: 0px !important
+//         label
+
+//             // margin-left: auto
+//             font-weight: bolder
+//             // background-color: blue
+//             width: 100% !important
+//             text-align: left !important
+//         .form-control
+
+//             width: 100%
+//             // max-width: 500px

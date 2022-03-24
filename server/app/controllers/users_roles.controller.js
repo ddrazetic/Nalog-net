@@ -18,9 +18,13 @@ exports.findAll = (req, res) => {
         through: "user_roles",
       },
     ],
-  }).then(function (result) {
-    res.json(result);
-  });
+  })
+    .then(function (result) {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.findAllModerators = (req, res) => {
@@ -38,9 +42,13 @@ exports.findAllModerators = (req, res) => {
         where: { id: 2 },
       },
     ],
-  }).then(function (result) {
-    res.json(result);
-  });
+  })
+    .then(function (result) {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.findOne = (req, res) => {
@@ -94,7 +102,11 @@ exports.update = (req, res) => {
         through: "user_roles",
       },
     ],
-  }).then((result) => {
-    result.setRoles([req.body.roleId]);
-  });
+  })
+    .then((result) => {
+      result.setRoles([req.body.roleId]);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

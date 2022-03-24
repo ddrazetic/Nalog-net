@@ -52,14 +52,13 @@ db.user.belongsToMany(db.role, {
   primaryKey: "userId",
   otherKey: "roleId",
 });
-
-var sql_string = fs.readFileSync(
-  "./app/models/putni_nalozi_drzave.sql",
-  "utf8"
-);
-
-// console.log(sql_string);
-db.sequelize.query(sql_string);
+// DODAVANJE TABLICE DRŽAVA
+// var sql_string = fs.readFileSync(
+//   "./app/models/putni_nalozi_drzave.sql",
+//   "utf8"
+// );
+// // console.log(sql_string);
+// db.sequelize.query(sql_string);
 
 db.ROLES = ["user", "admin", "moderator"];
 

@@ -42,8 +42,8 @@ app.get("/", (req, res) => {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
-require("./app/routes/users.edit.routes")(app);
-require("./app/routes/roles.edit.routes")(app);
+// require("./app/routes/users.edit.routes")(app);
+// require("./app/routes/roles.edit.routes")(app);
 require("./app/routes/users_roles.edit.routes")(app);
 require("./app/routes/order.routes")(app);
 
