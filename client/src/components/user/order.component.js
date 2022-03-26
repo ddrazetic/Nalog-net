@@ -6,8 +6,8 @@ import Textarea from "react-validation/build/textarea";
 import Select from "react-validation/build/select";
 import CheckButton from "react-validation/build/button";
 
-import OrderDataService from "../services/order.service";
-import ModeratorsDataService from "../services/moderators.service";
+import OrderDataService from "../../services/order.service";
+import ModeratorsDataService from "../../services/moderators.service";
 
 const required = (value) => {
   if (!value) {

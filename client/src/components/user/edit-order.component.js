@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import OrderDataService from "../services/order.service";
-import ModeratorsDataService from "../services/moderators.service";
+import OrderDataService from "../../services/order.service";
+import ModeratorsDataService from "../../services/moderators.service";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Select from "react-validation/build/select";

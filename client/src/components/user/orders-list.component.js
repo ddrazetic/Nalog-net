@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import OrderDataService from "../services/order.service";
+import OrderDataService from "../../services/order.service";
 // import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 // import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 // import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ const OrderList = (props) => {
   // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
+    // document.querySelectorAll(".buttonAddOrder").inner("style", `color:red`);
     props.childFunc.current = refreshList; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const retrieveOrders = () => {
@@ -38,6 +39,7 @@ const OrderList = (props) => {
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
     setCurrentIndex(index);
+
     setShowing(false);
   };
   const columns = [
@@ -66,7 +68,9 @@ const OrderList = (props) => {
   };
 
   const rowClasses = (row, rowIndex) => {
+    // if (row.roleEditId === 2) return "opacityRow";
     if (row.id === currentIndex) return "active";
+    if (row.roleEditId > 1) return "opacityRow  ";
   };
 
   // const removeAllOrders = () => {
@@ -79,11 +83,12 @@ const OrderList = (props) => {
   //       console.log(e);
   //     });
   // };
+
   return (
     <>
       <div className="list row tableOrders">
         <div className="col-md-8 table-responsive ">
-          <h4>Lista naloga</h4>
+          <h4 className="h4">Lista naloga</h4>
           <BootstrapTable
             keyField="id"
             data={orders ? orders : []}
@@ -128,7 +133,7 @@ const OrderList = (props) => {
           </Table> */}
 
           <button
-            className="buttonAddOrder buttonAddOrderSmall"
+            className="buttonAddOrder buttonAddOrderSmall "
             onClick={refreshList}
           >
             Osvježite listu

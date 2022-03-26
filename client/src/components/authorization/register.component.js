@@ -5,7 +5,7 @@ import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import { Redirect } from "react-router";
 
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 import { PersonPlus } from "react-bootstrap-icons";
 
 const required = (value) => {

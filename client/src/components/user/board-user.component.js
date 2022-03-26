@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Order from "./order.component";
 import OrderList from "./orders-list.component";
-import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
+import UserService from "../../services/user.service";
+import EventBus from "../../common/EventBus";
 
 const BoardUser = (props) => {
   const [currentUser] = useState(props.currentUser);

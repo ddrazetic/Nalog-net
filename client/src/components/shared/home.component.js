@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Homepage from "../homepage.jpg";
-import UserService from "../services/user.service";
+import Homepage from "../../homepage.jpg";
+import UserService from "../../services/user.service";
 
 const Home = (props) => {
   const [content, setContent] = useState("");
