@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import UserService from "../../services/user.service";
 import EventBus from "../../common/EventBus";
-
+import OrderList from "./orders-list.component";
 const BoardModerator = (props) => {
   const [content, setContent] = useState("");
+  const [currentUser] = useState(props.currentUser);
+
+  const childFunc = useRef(null);
   useEffect(() => {
     UserService.getModeratorBoard().then(
       (response) => {
@@ -27,11 +30,11 @@ const BoardModerator = (props) => {
   }, []);
   return (
     <div className="card card-containerMax">
-      <header>
-        <h3>{content}</h3>
-      </header>
+      <header>{/* <h3>{content}</h3> */}</header>
       {content === "Moderator Content." ? (
-        <p>pristup dozvoljen</p>
+        <>
+          <OrderList childFunc={childFunc} currentUser={currentUser} />
+        </>
       ) : (
         <p>pristup odbijen</p>
       )}

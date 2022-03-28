@@ -165,8 +165,10 @@ const App = (props) => {
                 </Route>
                 <Route
                   path="/mod"
-                  component={BoardModerator} // component={showModeratorBoard && BoardModerator}
-                />
+                  // component={BoardModerator} // component={showModeratorBoard && BoardModerator}
+                >
+                  {currentUser && <BoardModerator currentUser={currentUser} />}
+                </Route>
                 <Route
                   path="/admin"
                   component={BoardAdmin} // component={showAdminBoard && BoardAdmin}

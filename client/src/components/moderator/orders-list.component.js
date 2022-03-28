@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import OrderDataService from "../../services/order.service";
-// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-// import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-// import { Link } from "react-router-dom";
-import EditOrder from "./edit-order.component";
-// import Table from "react-bootstrap/Table";
+// import EditOrder from "./edit-order.component";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 
@@ -23,7 +19,9 @@ const OrderList = (props) => {
     OrderDataService.getAll()
       .then((response) => {
         setOrders(
-          response.data.filter((order) => order.editId === props.currentUser.id)
+          response.data.filter(
+            (order) => order.nameModerator === props.currentUser.name
+          )
         ); // console.log(response.data);
       })
       .catch((e) => {
@@ -42,6 +40,23 @@ const OrderList = (props) => {
 
     setShowing(false);
   };
+
+  const updateOrder = (roleEditId) => {
+    OrderDataService.update(currentOrder.id, {
+      ...currentOrder,
+      roleEditId: roleEditId,
+    })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          refreshList();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   const columns = [
     {
       dataField: "id",
@@ -52,8 +67,8 @@ const OrderList = (props) => {
       text: "Datum",
     },
     {
-      dataField: "nameModerator",
-      text: "Ime voditelja",
+      dataField: "nameWorker",
+      text: "Ime podnositelja",
     },
     {
       dataField: "countryDestination",
@@ -70,20 +85,9 @@ const OrderList = (props) => {
   const rowClasses = (row, rowIndex) => {
     // if (row.roleEditId === 2) return "opacityRow";
     if (row.id === currentIndex) return "active";
-    if (row.roleEditId === 5) return "redRow  ";
-    if (row.roleEditId > 1) return "opacityRow  ";
+    if (row.roleEditId === 5) return "redRow ";
+    if (row.roleEditId !== 2) return "opacityRow  ";
   };
-
-  // const removeAllOrders = () => {
-  //   OrderDataService.deleteAll()
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       refreshList();
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
 
   return (
     <>
@@ -102,36 +106,6 @@ const OrderList = (props) => {
             rowEvents={rowEvents}
             rowClasses={rowClasses}
           />
-
-          {/* <Table responsive="md" striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th style={{ width: "100px" }}>br. Naloga</th>
-                <th>Datum</th>
-                <th>Ime voditelja</th>
-                <th>Zemlja putovanja</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders &&
-                orders
-                  .filter((order) => order.editId === props.currentUser.id)
-                  .map((order, index) => {
-                    return (
-                      <tr
-                        className={index === currentIndex ? "active" : ""}
-                        onClick={() => setActiveOrder(order, index)}
-                        key={index}
-                      >
-                        <td>{order.id}</td>
-                        <td>{order.date}</td>
-                        <td>{order.nameModerator}</td>
-                        <td>{order.countryDestination}</td>
-                      </tr>
-                    );
-                  })}
-            </tbody>
-          </Table> */}
 
           <button
             className="buttonAddOrder buttonAddOrderSmall "
@@ -211,31 +185,57 @@ const OrderList = (props) => {
                 </label>{" "}
                 {currentOrder.roleEditId}
               </div>
-              {/* OVO SE TREBA PROMIJENITI U 1 KASNIJE */}
-              {currentOrder.roleEditId === 1 ? (
+              {/* OVO SE TREBA PROMIJENITI U 2 KASNIJE */}
+              {currentOrder.roleEditId === 2 ||
+              currentOrder.roleEditId === 5 ? (
                 <>
                   <button
-                    className={`buttonAddOrder  buttonAddOrderSmall ${
-                      !showing ? "" : "closeButton"
-                    }  `}
+                    className={`buttonAddOrder confirmButton  buttonAddOrderSmall smallMargin `}
                     onClick={() => {
-                      setShowing(!showing);
-                      // window.location("#editOrder");
+                      updateOrder(3);
+                      // console.log(currentOrder.roleEditId);
                     }}
                   >
-                    {showing ? (
-                      "Zatvorite formu za uređivanje"
-                    ) : (
-                      <a className="scrollButton" href="#editOrder">
-                        Otvorite formu za uređivanje
-                      </a>
-                    )}
+                    Potvrdite nalog
+                  </button>
+                  <button
+                    className={`buttonAddOrder  buttonAddOrderSmall smallMargin closeButton `}
+                    onClick={() => {
+                      updateOrder(5);
+                      // console.log(currentOrder.roleEditId);
+                    }}
+                  >
+                    Odbijte nalog
+                  </button>
+                  <button
+                    className={`buttonAddOrder  buttonAddOrderSmall smallMargin `}
+                    onClick={() => {
+                      updateOrder(1);
+                      // console.log(currentOrder.roleEditId);
+                    }}
+                  >
+                    Potrebne izmjene
                   </button>
                 </>
               ) : (
                 <p style={{ color: "red" }}>
                   Ovaj nalog se ne možete uređivati!
                 </p>
+              )}
+              {currentOrder.roleEditId === 1 ? (
+                <p>Zahtjev je poslan korisniku na izmjene. </p>
+              ) : (
+                <></>
+              )}
+              {currentOrder.roleEditId === 3 ? (
+                <p>Zahtjev je proslijeđen direktoru na izmjene. </p>
+              ) : (
+                <></>
+              )}
+              {currentOrder.roleEditId === 5 ? (
+                <p>Zahtjev je odbijen. </p>
+              ) : (
+                <></>
               )}
             </div>
           ) : (
@@ -246,9 +246,9 @@ const OrderList = (props) => {
           )}
         </div>
       </div>
-      {showing && currentOrder ? (
+      {/* {showing && currentOrder ? (
         <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

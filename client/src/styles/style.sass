@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
-// $primaryColor: #776BCC
-// $primaryLightColor: #C7C5F4
-// $primaryShadow: #463e81
-$primaryColor: #4cb4dd
-$primaryLightColor: #abcfdd
-$primaryShadow: #334b55
+$primaryColor: #bd0000c2
+$primaryLightColor: #81aa4041
+$primaryShadow: #051818
+// $primaryColor: #4cb4dd
+// $primaryLightColor: #abcfdd
+// $primaryShadow: #334b55
 
 *
     box-sizing: border-box
@@ -122,6 +122,11 @@ body
     margin-bottom: 50px
     margin-top: 40px
     margin-right: 50px
+    &:hover
+        opacity: 0.7
+    &:active
+        background-color: $primaryShadow
+
 .buttonAddOrderSmall
     font-size: 16px
     padding: 5px
@@ -130,9 +135,15 @@ body
     margin: 0px
 
 .closeButton
-    background-color: #ff2525
+    background-color: #cc1919
+.confirmButton
+    background-color: #56c010
 // .popupBox
 //     width: 1000px
+
+.smallMargin
+    margin: 10px !important
+    // box-shadow: none
 .submit-form
     background-color: #f5f5f5
     padding: 10px 60px
@@ -178,7 +189,10 @@ body
 .tableOrders
     padding: 30px
 .opacityRow
-    opacity: 0.5
+    opacity: 0.7
+.redRow
+    background-color: #f8bebe59 !important
+    opacity: 0.9
 .buttonsEdit
     display: flex
 

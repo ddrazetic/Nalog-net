@@ -97,7 +97,10 @@ const EditOrder = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      OrderDataService.update(currentOrder.id, currentOrder)
+      OrderDataService.update(currentOrder.id, {
+        ...currentOrder,
+        roleEditId: 2,
+      })
         .then((response) => {
           console.log(response.data);
           // setMessage("The Order was updated successfully!");
