@@ -24,6 +24,15 @@ module.exports = (sequelize, Sequelize) => {
     salary: {
       type: Sequelize.DECIMAL(10, 2),
     },
+    travelCosts: {
+      type: Sequelize.DECIMAL(10, 2),
+    },
+    otherCosts: {
+      type: Sequelize.DECIMAL(10, 2),
+    },
+    totalCosts: {
+      type: Sequelize.DECIMAL(10, 2),
+    },
     date: {
       type: Sequelize.STRING,
     },

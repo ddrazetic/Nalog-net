@@ -7,12 +7,15 @@ import EditOrder from "./edit-order.component";
 // import Table from "react-bootstrap/Table";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
+import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
+import EditCosts from "./edit-costs.component";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();
   const [currentOrder, setCurrentOrder] = useState();
   const [currentIndex, setCurrentIndex] = useState();
   const [showing, setShowing] = useState(false);
+  const [showingCosts, setShowingCosts] = useState(false);
   // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
@@ -42,6 +45,16 @@ const OrderList = (props) => {
 
     setShowing(false);
   };
+
+  const selectOptions = {
+    1: "Kod djelatnika",
+    2: "Kod voditelja jedinice",
+    3: "Kod direktora",
+    5: "Arhiva - odbijeni nalozi",
+    6: "Arhiva - odobreni nalozi",
+    7: "Arhiva - plaćeni nalozi",
+  };
+
   const columns = [
     {
       dataField: "id",
@@ -59,6 +72,13 @@ const OrderList = (props) => {
       dataField: "countryDestination",
       text: "Zemlja",
     },
+    {
+      dataField: "roleEditId",
+      text: "Status",
+      filter: selectFilter({
+        options: selectOptions,
+      }),
+    },
   ];
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
@@ -71,6 +91,8 @@ const OrderList = (props) => {
     // if (row.roleEditId === 2) return "opacityRow";
     if (row.id === currentIndex) return "active";
     if (row.roleEditId === 5) return "redRow  ";
+    if (row.roleEditId === 6) return "yellowRow ";
+    if (row.roleEditId === 7) return "greenRow ";
     if (row.roleEditId > 1) return "opacityRow  ";
   };
 
@@ -101,37 +123,8 @@ const OrderList = (props) => {
             pagination={paginationFactory()}
             rowEvents={rowEvents}
             rowClasses={rowClasses}
+            filter={filterFactory()}
           />
-
-          {/* <Table responsive="md" striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th style={{ width: "100px" }}>br. Naloga</th>
-                <th>Datum</th>
-                <th>Ime voditelja</th>
-                <th>Zemlja putovanja</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders &&
-                orders
-                  .filter((order) => order.editId === props.currentUser.id)
-                  .map((order, index) => {
-                    return (
-                      <tr
-                        className={index === currentIndex ? "active" : ""}
-                        onClick={() => setActiveOrder(order, index)}
-                        key={index}
-                      >
-                        <td>{order.id}</td>
-                        <td>{order.date}</td>
-                        <td>{order.nameModerator}</td>
-                        <td>{order.countryDestination}</td>
-                      </tr>
-                    );
-                  })}
-            </tbody>
-          </Table> */}
 
           <button
             className="buttonAddOrder buttonAddOrderSmall "
@@ -233,9 +226,24 @@ const OrderList = (props) => {
                   </button>
                 </>
               ) : (
-                <p style={{ color: "red" }}>
-                  Ovaj nalog se ne možete uređivati!
-                </p>
+                <>
+                  <p style={{ color: "red" }}>
+                    Ovaj nalog se ne možete uređivati!
+                  </p>
+                  {currentOrder.roleEditId === 6 ? (
+                    <button
+                      onClick={() => {
+                        setShowingCosts(!showingCosts);
+                        // window.location("#editOrder");
+                      }}
+                      className="buttonAddOrder  buttonAddOrderSmall"
+                    >
+                      Otvori formu za plaćanje
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                </>
               )}
             </div>
           ) : (
@@ -248,6 +256,9 @@ const OrderList = (props) => {
       </div>
       {showing && currentOrder ? (
         <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
+      ) : null}
+      {showingCosts && currentOrder ? (
+        <EditCosts refreshList={refreshList} currentOrder={currentOrder} />
       ) : null}
     </>
   );

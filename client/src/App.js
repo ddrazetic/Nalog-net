@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
 // import "./App.css";
 import "./styles/style.css";
-
+import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import AuthService from "./services/auth.service";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
@@ -171,8 +171,14 @@ const App = (props) => {
                 </Route>
                 <Route
                   path="/admin"
+                  // component={BoardModerator} // component={showModeratorBoard && BoardModerator}
+                >
+                  {currentUser && <BoardAdmin currentUser={currentUser} />}
+                </Route>
+                {/* <Route
+                  path="/admin"
                   component={BoardAdmin} // component={showAdminBoard && BoardAdmin}
-                />
+                /> */}
               </Switch>
             </div>
           </>

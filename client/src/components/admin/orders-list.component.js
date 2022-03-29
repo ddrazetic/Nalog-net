@@ -3,13 +3,14 @@ import OrderDataService from "../../services/order.service";
 // import EditOrder from "./edit-order.component";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
+import EditOrder from "./edit-order.component";
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();
   const [currentOrder, setCurrentOrder] = useState();
   const [currentIndex, setCurrentIndex] = useState();
-  // const [showing, setShowing] = useState(false);
+  const [showing, setShowing] = useState(false);
   // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
@@ -20,9 +21,8 @@ const OrderList = (props) => {
     OrderDataService.getAll()
       .then((response) => {
         setOrders(
-          response.data.filter(
-            (order) => order.nameModerator === props.currentUser.name
-          )
+          response.data
+          // .filter((order) => order.roleEditId !== 5)
         ); // console.log(response.data);
       })
       .catch((e) => {
@@ -33,13 +33,13 @@ const OrderList = (props) => {
     retrieveOrders();
     setCurrentOrder(null);
     setCurrentIndex(-1);
-    // setShowing(false);
+    setShowing(false);
   };
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
     setCurrentIndex(index);
 
-    // setShowing(false);
+    setShowing(false);
   };
 
   const updateOrder = (roleEditId) => {
@@ -105,7 +105,7 @@ const OrderList = (props) => {
     if (row.roleEditId === 5) return "redRow ";
     if (row.roleEditId === 6) return "yellowRow ";
     if (row.roleEditId === 7) return "greenRow ";
-    if (row.roleEditId !== 2) return "opacityRow  ";
+    if (row.roleEditId !== 3) return "opacityRow  ";
   };
 
   return (
@@ -206,13 +206,13 @@ const OrderList = (props) => {
                 {currentOrder.roleEditId}
               </div>
               {/* OVO SE TREBA PROMIJENITI U 2 KASNIJE */}
-              {currentOrder.roleEditId === 2 ? (
+              {currentOrder.roleEditId === 3 ? (
                 // || currentOrder.roleEditId === 5
                 <>
                   <button
                     className={`buttonAddOrder confirmButton  buttonAddOrderSmall smallMargin `}
                     onClick={() => {
-                      updateOrder(3);
+                      updateOrder(6);
                       // console.log(currentOrder.roleEditId);
                     }}
                   >
@@ -236,19 +236,34 @@ const OrderList = (props) => {
                   >
                     Potrebne izmjene
                   </button>
+                  <button
+                    className={`buttonAddOrder smallMargin buttonAddOrderSmall ${
+                      !showing ? "" : "closeButton"
+                    }  `}
+                    onClick={() => {
+                      setShowing(!showing);
+                      // window.location("#editOrder");
+                    }}
+                  >
+                    {showing ? (
+                      "Zatvorite formu "
+                    ) : (
+                      <a className="scrollButton" href="#editOrder">
+                        Uredite nalog
+                      </a>
+                    )}
+                  </button>
                 </>
               ) : (
-                <p style={{ color: "red" }}>
-                  Ovaj nalog se ne možete uređivati!
-                </p>
+                <p style={{ color: "red" }}>Ovaj nalog ne možete uređivati!</p>
               )}
               {currentOrder.roleEditId === 1 ? (
                 <p>Zahtjev je poslan korisniku na izmjene. </p>
               ) : (
                 <></>
               )}
-              {currentOrder.roleEditId === 3 ? (
-                <p>Zahtjev je proslijeđen direktoru na izmjene. </p>
+              {currentOrder.roleEditId === 2 ? (
+                <p>Zahtjev je kod voditelja jedinice za pregledu. </p>
               ) : (
                 <></>
               )}
@@ -266,9 +281,9 @@ const OrderList = (props) => {
           )}
         </div>
       </div>
-      {/* {showing && currentOrder ? (
+      {showing && currentOrder ? (
         <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
-      ) : null} */}
+      ) : null}
     </>
   );
 };
