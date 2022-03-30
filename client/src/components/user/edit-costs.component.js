@@ -32,11 +32,12 @@ const EditCosts = (props) => {
     numberOfDays: "",
     addition: "",
     roleEditId: "",
-    totalCosts: "",
+    totalCosts: 0,
     otherCosts: "",
     travelCosts: "",
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
+  const [currentCosts, setCurrentCosts] = useState(0);
 
   // const [message, setMessage] = useState("");
   const [moderators, setModerators] = useState([]);
@@ -60,6 +61,7 @@ const EditCosts = (props) => {
         console.log(e);
       });
   };
+
   const retrieveCountries = () => {
     OrderDataService.getAllCountries()
       .then((response) => {
@@ -70,10 +72,21 @@ const EditCosts = (props) => {
         console.log(e);
       });
   };
-
+  const sumAllCosts = () => {
+    let sum =
+      parseFloat(currentOrder.travelCosts || 0) +
+      parseFloat(currentOrder.otherCosts || 0) +
+      parseFloat(currentOrder.numberOfDays * currentOrder.salary);
+    return sum;
+  };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCurrentOrder({ ...currentOrder, [name]: value });
+    setCurrentOrder({
+      ...currentOrder,
+      [name]: value,
+    });
+    // setCurrentCosts(currentCosts + parseFloat(value));
+    // console.log(currentCosts);
   };
 
   const onChangecountryDestination = (e) => {
@@ -103,6 +116,7 @@ const EditCosts = (props) => {
       OrderDataService.update(currentOrder.id, {
         ...currentOrder,
         roleEditId: 6,
+        totalCosts: sumAllCosts(),
       })
         .then((response) => {
           console.log(response.data);
@@ -141,105 +155,6 @@ const EditCosts = (props) => {
               form.current = c;
             }}
           >
-            {/* <div className="form-group">
-              <label htmlFor="title">Naslov:</label>
-              <Input
-                type="text"
-                className="form-control"
-                id="title"
-                placeholder="unesite naslov"
-                value={currentOrder.title}
-                onChange={handleInputChange}
-                name="title"
-                validations={[required]}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Opis:</label>
-              <Textarea
-                type="text"
-                className="form-control"
-                rows={3}
-                id="description"
-                placeholder="opišite putovanje"
-                value={currentOrder.description}
-                onChange={handleInputChange}
-                name="description"
-                validations={[required]}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="editId">Id djelatnika:</label>
-              <Input
-                type="text"
-                className="form-control"
-                id="editId"
-                readOnly
-                value={currentOrder.editId}
-                // onChange={onChangeeditId}
-                name="editId"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="nameWorker">Ime i prezime djelatnika:</label>
-              <Input
-                type="text"
-                className="form-control"
-                id="description"
-                readOnly
-                value={currentOrder.nameWorker}
-                // onChange={onChangenameWorker}
-                name="nameWorker"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="nameModerator">
-                Ime i prezime voditelja jedinice:
-              </label>
-              <Select
-                className="form-control dropdown-toggle"
-                placeholder="odaberite voditelja jedinice"
-                value={currentOrder.nameModerator}
-                onChange={handleInputChange}
-                name="nameModerator"
-                validations={[required]}
-              >
-                <option></option>
-                {moderators.map((eachUser, i) => (
-                  <option key={i}>{eachUser.name}</option>
-                ))}
-              </Select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="countryDestination">Zemlja putovanja:</label>
-              <Select
-                className="form-control dropdown-toggle"
-                placeholder="odaberite zemlju putovanja"
-                value={currentOrder.countryDestination}
-                onChange={onChangecountryDestination}
-                name="countryDestination"
-                validations={[required]}
-              >
-                <option>{currentOrder.countryDestination}</option>
-                {countries.map((eachCountry, i) => (
-                  <option key={i}>{eachCountry.naziv}</option>
-                ))}
-              </Select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="placeDestination">Mjesto putovanja:</label>
-              <Input
-                type="text"
-                className="form-control"
-                id="place"
-                placeholder="unesite mjesto putovanja"
-                value={currentOrder.placeDestination}
-                onChange={handleInputChange}
-                name="placeDestination"
-                validations={[required]}
-              />
-            </div> */}
             <div className="form-group">
               <label htmlFor="salary">Dnevnica:</label>
               <Input
@@ -254,23 +169,10 @@ const EditCosts = (props) => {
               />
             </div>
 
-            {/* <div className="form-group">
-              <label htmlFor="date">Datum početka:</label>
-              <Input
-                type="date"
-                className="form-control"
-                id="date"
-                placeholder="odaberite datum početka putovanja"
-                value={currentOrder.date}
-                onChange={handleInputChange}
-                name="date"
-                validations={[required]}
-              />
-            </div> */}
             <div className="form-group">
               <label htmlFor="numberOfDays">Broj dana boravka:</label>
               <Input
-                type="text"
+                type="number"
                 className="form-control"
                 id="number"
                 placeholder="unesite broj dana boravka"
@@ -313,26 +215,15 @@ const EditCosts = (props) => {
                 className="form-control"
                 id="number"
                 placeholder="unesite troškove puta."
-                value={currentOrder.totalCosts || ""}
-                onChange={handleInputChange}
+                readOnly
+                // value={currentOrder.totalCosts || ""}
+                value={sumAllCosts()}
+                // onChange={handleInputChange}
                 name="totalCosts"
                 validations={[required]}
               />
             </div>
 
-            {/* <div className="form-group">
-              <label htmlFor="addition">Dodatno (opcionalno):</label>
-              <Textarea
-                type="text"
-                className="form-control"
-                id="addition"
-                rows={3}
-                placeholder="Napišite dodatne stavke vezane uz putovanje"
-                value={currentOrder.addition || ""}
-                onChange={handleInputChange}
-                name="addition"
-              />
-            </div> */}
             <div className="form-group buttonsEdit">
               {" "}
               <button className="buttonAddOrder buttonDeleteOrder">
