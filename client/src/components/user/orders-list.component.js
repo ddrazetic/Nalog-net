@@ -38,11 +38,12 @@ const OrderList = (props) => {
     setCurrentOrder(null);
     setCurrentIndex(-1);
     setShowing(false);
+    setShowingCosts(false);
   };
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
     setCurrentIndex(index);
-
+    setShowingCosts(false);
     setShowing(false);
   };
 
@@ -52,7 +53,8 @@ const OrderList = (props) => {
     3: "Kod direktora",
     5: "Arhiva - odbijeni nalozi",
     6: "Arhiva - odobreni nalozi",
-    7: "Arhiva - plaćeni nalozi",
+    7: "Arhiva - čekanje naplate",
+    8: "Arhiva - plaćeni nalozi",
   };
 
   const columns = [
@@ -93,6 +95,7 @@ const OrderList = (props) => {
     if (row.roleEditId === 5) return "redRow  ";
     if (row.roleEditId === 6) return "yellowRow ";
     if (row.roleEditId === 7) return "greenRow ";
+    if (row.roleEditId === 8) return "grayRow ";
     if (row.roleEditId > 1) return "opacityRow  ";
   };
 
@@ -228,20 +231,78 @@ const OrderList = (props) => {
               ) : (
                 <>
                   <p style={{ color: "red" }}>
-                    Ovaj nalog se ne možete uređivati!
+                    Ovaj nalog se ne može uređivati!
                   </p>
                   {currentOrder.roleEditId === 6 ? (
-                    <button
-                      onClick={() => {
-                        setShowingCosts(!showingCosts);
-                        // window.location("#editOrder");
-                      }}
-                      className="buttonAddOrder  buttonAddOrderSmall"
-                    >
-                      Otvori formu za plaćanje
-                    </button>
+                    <>
+                      <button
+                        className={`buttonAddOrder  buttonAddOrderSmall ${
+                          !showingCosts ? "" : "closeButton"
+                        }  `}
+                        onClick={() => {
+                          setShowingCosts(!showingCosts);
+                          // window.location("#editOrder");
+                        }}
+                      >
+                        {showingCosts ? (
+                          "Zatvorite formu za plaćanje"
+                        ) : (
+                          <a className="scrollButton" href="#editCosts">
+                            Otvorite formu za plaćanje
+                          </a>
+                        )}
+                      </button>
+                    </>
                   ) : (
                     ""
+                  )}
+                  {currentOrder.roleEditId === 7 ||
+                  currentOrder.roleEditId === 8 ? (
+                    <>
+                      <div>
+                        <label>
+                          <strong>Ukupno dnevnica:</strong>
+                        </label>{" "}
+                        {parseFloat(
+                          currentOrder.salary * currentOrder.numberOfDays
+                        ).toLocaleString("en")}{" "}
+                        HRK
+                      </div>
+                      <div>
+                        <label>
+                          <strong>Putni troškovi:</strong>
+                        </label>{" "}
+                        {parseFloat(currentOrder.travelCosts).toLocaleString(
+                          "en"
+                        )}{" "}
+                        HRK
+                      </div>
+                      <div>
+                        <label>
+                          <strong>Ostali troškovi:</strong>
+                        </label>{" "}
+                        {parseFloat(currentOrder.otherCosts).toLocaleString(
+                          "en"
+                        )}{" "}
+                        HRK
+                      </div>
+                      <div style={{ fontSize: "20px" }}>
+                        <label>
+                          <strong>UKUPNO:</strong>
+                        </label>{" "}
+                        {parseFloat(currentOrder.totalCosts).toLocaleString(
+                          "en"
+                        )}{" "}
+                        HRK
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {currentOrder.roleEditId === 8 ? (
+                    <p style={{ color: "red", fontSize: "30px" }}>Plaćeno </p>
+                  ) : (
+                    <></>
                   )}
                 </>
               )}

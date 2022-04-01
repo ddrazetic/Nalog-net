@@ -64,7 +64,8 @@ const OrderList = (props) => {
     3: "Kod direktora",
     5: "Arhiva - odbijeni nalozi",
     6: "Arhiva - odobreni nalozi",
-    7: "Arhiva - plaćeni nalozi",
+    7: "Arhiva - čekanje naplate",
+    8: "Arhiva - plaćeni nalozi",
   };
 
   const columns = [
@@ -105,6 +106,7 @@ const OrderList = (props) => {
     if (row.roleEditId === 5) return "redRow ";
     if (row.roleEditId === 6) return "yellowRow ";
     if (row.roleEditId === 7) return "greenRow ";
+    if (row.roleEditId === 8) return "grayRow ";
     if (row.roleEditId !== 2) return "opacityRow  ";
   };
 
@@ -254,6 +256,42 @@ const OrderList = (props) => {
               )}
               {currentOrder.roleEditId === 5 ? (
                 <p>Zahtjev je odbijen. </p>
+              ) : (
+                <></>
+              )}
+              {currentOrder.roleEditId === 7 ||
+              currentOrder.roleEditId === 8 ? (
+                <>
+                  <div>
+                    <label>
+                      <strong>Ukupno dnevnica:</strong>
+                    </label>{" "}
+                    {currentOrder.salary * currentOrder.numberOfDays} HRK
+                  </div>
+                  <div>
+                    <label>
+                      <strong>Putni troškovi:</strong>
+                    </label>{" "}
+                    {currentOrder.travelCosts} HRK
+                  </div>
+                  <div>
+                    <label>
+                      <strong>Ostali troškovi:</strong>
+                    </label>{" "}
+                    {currentOrder.otherCosts} HRK
+                  </div>
+                  <div style={{ fontSize: "20px" }}>
+                    <label>
+                      <strong>UKUPNO:</strong>
+                    </label>{" "}
+                    {currentOrder.totalCosts} HRK
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+              {currentOrder.roleEditId === 8 ? (
+                <p style={{ color: "red", fontSize: "20px" }}>Plaćeno </p>
               ) : (
                 <></>
               )}
