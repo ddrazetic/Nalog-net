@@ -10,7 +10,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        Ovo polje je obavezno!
       </div>
     );
   }
@@ -72,12 +72,11 @@ const Login = (props) => {
         }}
       >
         <div className="form-group">
-          {/* <label htmlFor="username">Username</label> */}
           <Input
             type="text"
             className="loginInput"
             name="username"
-            placeholder="username"
+            placeholder="Korisničko ime"
             value={username || ""}
             onChange={onChangeUsername}
             validations={[required]}
@@ -85,12 +84,11 @@ const Login = (props) => {
         </div>
 
         <div className="form-group">
-          {/* <label htmlFor="password">Password</label> */}
           <Input
             type="password"
             className="loginInput"
             name="password"
-            placeholder="password"
+            placeholder="Lozinka"
             value={password || ""}
             onChange={onChangePassword}
             validations={[required]}
@@ -102,7 +100,7 @@ const Login = (props) => {
             {loading && (
               <span className="spinner-border spinner-border-sm"></span>
             )}
-            <span>Login</span>
+            <span>Prijavi se</span>
           </button>
         </div>
 

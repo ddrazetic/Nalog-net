@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
-// import "./App.css";
 import "./styles/style.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import AuthService from "./services/auth.service";
@@ -8,15 +7,14 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "./components/authorization/login.component";
-import Register from "./components/authorization/register.component";
-import Home from "./components/shared/home.component";
-import Profile from "./components/shared/profile.component";
-import BoardUser from "./components/user/board-user.component";
-import BoardModerator from "./components/moderator/board-moderator.component";
-import BoardAdmin from "./components/admin/board-admin.component";
-import SuperAdmin from "./super_admin/SuperAdmin";
-// import AuthVerify from "./common/auth-verify";
+import Login from "./components/authorization/login";
+import Register from "./components/authorization/register";
+import Home from "./components/shared/home";
+import Profile from "./components/shared/profile";
+import BoardUser from "./components/user/board-user";
+import BoardModerator from "./components/moderator/board-moderator";
+import BoardAdmin from "./components/admin/board-admin";
+import SuperAdmin from "./components/super_admin/SuperAdmin";
 import EventBus from "./common/EventBus";
 
 const App = (props) => {
@@ -51,7 +49,6 @@ const App = (props) => {
   return (
     <div>
       <Switch>
-        {/* <Route path="/superadmin" component={SuperAdmin} /> */}
         <Route path="/superadmin">
           <SuperAdmin />
         </Route>
@@ -75,7 +72,7 @@ const App = (props) => {
                       className="nav-link"
                       activeClassName="nav_link--active"
                     >
-                      Home
+                      Naslovnica
                     </NavLink>
 
                     {showModeratorBoard && (
@@ -84,7 +81,7 @@ const App = (props) => {
                         className="nav-link"
                         activeClassName="nav_link--active"
                       >
-                        Moderator Board
+                        Voditelj
                       </NavLink>
                     )}
 
@@ -94,7 +91,7 @@ const App = (props) => {
                         activeClassName="nav_link--active"
                         className="nav-link"
                       >
-                        Admin Board
+                        Direktor
                       </NavLink>
                     )}
 
@@ -104,7 +101,7 @@ const App = (props) => {
                         className="nav-link"
                         activeClassName="nav_link--active"
                       >
-                        User
+                        Korisnik
                       </NavLink>
                     )}
                   </Nav>
@@ -120,7 +117,7 @@ const App = (props) => {
                       </NavLink>
 
                       <a href="/login" className="nav-link" onClick={logOut}>
-                        LogOut
+                        Odjava
                       </a>
                     </Nav>
                   ) : (
@@ -130,7 +127,7 @@ const App = (props) => {
                         className="nav-link"
                         activeClassName="nav_link--active"
                       >
-                        Login
+                        Prijava
                       </NavLink>
 
                       <NavLink
@@ -138,12 +135,12 @@ const App = (props) => {
                         className="nav-link"
                         activeClassName="nav_link--active"
                       >
-                        Sign Up
+                        Registracija
                       </NavLink>
 
-                      <NavLink to={"/superadmin"} className="nav-link">
+                      {/* <NavLink to={"/superadmin"} className="nav-link">
                         Super admin
-                      </NavLink>
+                      </NavLink> */}
                     </Nav>
                   )}
                 </Navbar.Collapse>
@@ -157,28 +154,15 @@ const App = (props) => {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/profile" component={Profile} />
 
-                <Route
-                  path="/user" // component={BoardUser}
-                  // component={showUserBoard && BoardUser}
-                >
+                <Route path="/user">
                   {currentUser && <BoardUser currentUser={currentUser} />}
                 </Route>
-                <Route
-                  path="/mod"
-                  // component={BoardModerator} // component={showModeratorBoard && BoardModerator}
-                >
+                <Route path="/mod">
                   {currentUser && <BoardModerator currentUser={currentUser} />}
                 </Route>
-                <Route
-                  path="/admin"
-                  // component={BoardModerator} // component={showModeratorBoard && BoardModerator}
-                >
+                <Route path="/admin">
                   {currentUser && <BoardAdmin currentUser={currentUser} />}
                 </Route>
-                {/* <Route
-                  path="/admin"
-                  component={BoardAdmin} // component={showAdminBoard && BoardAdmin}
-                /> */}
               </Switch>
             </div>
           </>
@@ -189,188 +173,3 @@ const App = (props) => {
 };
 
 export default App;
-
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.logOut = this.logOut.bind(this);
-
-//     this.state = {
-//       showModeratorBoard: false,
-//       showAdminBoard: false,
-//       showUserBoard: false,
-//       currentUser: undefined,
-//     };
-//   }
-
-//   componentDidMount() {
-//     const user = AuthService.getCurrentUser();
-
-//     if (user) {
-//       this.setState({
-//         currentUser: user,
-//         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-//         showUserBoard: user.roles.includes("ROLE_USER"),
-//         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-//       });
-//     }
-
-//     EventBus.on("logout", () => {
-//       this.logOut();
-//     });
-//   }
-
-//   componentWillUnmount() {
-//     EventBus.remove("logout");
-//   }
-
-//   logOut() {
-//     AuthService.logout();
-//     this.setState({
-//       showModeratorBoard: false,
-//       showAdminBoard: false,
-//       showUserBoard: false,
-//       currentUser: undefined,
-//     });
-//   }
-
-//   render() {
-//     const { currentUser, showModeratorBoard, showUserBoard, showAdminBoard } =
-//       this.state;
-//     // this.state.userId && console.log(this.state.userId);
-//     return (
-//       <div>
-//         <Switch>
-//           <Route path="/superadmin" component={SuperAdmin} />
-//           <Route path="/">
-//             <>
-//               <Navbar
-//                 className="navShadow"
-//                 style={{ backgroundColor: "white" }}
-//                 expand="sm"
-//               >
-//                 <Container>
-//                   <Navbar.Brand className="navTitle">Nalog-net</Navbar.Brand>
-//                   <Navbar.Toggle aria-controls="basic-navbar-nav" />
-//                   <Navbar.Collapse className="navLinks" id="basic-navbar-nav ">
-//                     <Nav className="me-auto ">
-//                       <NavLink
-//                         exact
-//                         to={"/"}
-//                         className="nav-link"
-//                         activeClassName="nav_link--active"
-//                       >
-//                         Home
-//                       </NavLink>
-
-//                       {showModeratorBoard && (
-//                         <NavLink
-//                           to={"/mod"}
-//                           className="nav-link"
-//                           activeClassName="nav_link--active"
-//                         >
-//                           Moderator Board
-//                         </NavLink>
-//                       )}
-
-//                       {showAdminBoard && (
-//                         <NavLink
-//                           to={"/admin"}
-//                           activeClassName="nav_link--active"
-//                           className="nav-link"
-//                         >
-//                           Admin Board
-//                         </NavLink>
-//                       )}
-
-//                       {showUserBoard && (
-//                         <NavLink
-//                           to={"/user"}
-//                           className="nav-link"
-//                           activeClassName="nav_link--active"
-//                         >
-//                           User
-//                         </NavLink>
-//                       )}
-//                     </Nav>
-
-//                     {currentUser ? (
-//                       <Nav className="ml-auto">
-//                         <NavLink
-//                           to={"/profile"}
-//                           className="nav-link"
-//                           activeClassName="nav_link--active"
-//                         >
-//                           {currentUser.username}
-//                         </NavLink>
-
-//                         <a
-//                           href="/login"
-//                           className="nav-link"
-//                           onClick={this.logOut}
-//                         >
-//                           LogOut
-//                         </a>
-//                       </Nav>
-//                     ) : (
-//                       <Nav className="ml-auto">
-//                         <NavLink
-//                           to={"/login"}
-//                           className="nav-link"
-//                           activeClassName="nav_link--active"
-//                         >
-//                           Login
-//                         </NavLink>
-
-//                         <NavLink
-//                           to={"/register"}
-//                           className="nav-link"
-//                           activeClassName="nav_link--active"
-//                         >
-//                           Sign Up
-//                         </NavLink>
-
-//                         <NavLink to={"/superadmin"} className="nav-link">
-//                           Super admin
-//                         </NavLink>
-//                       </Nav>
-//                     )}
-//                   </Navbar.Collapse>
-//                 </Container>
-//               </Navbar>
-
-//               <div className="">
-//                 <Switch>
-//                   <Route exact path={["/"]} component={Home} />
-//                   <Route exact path="/login" component={Login} />
-//                   <Route exact path="/register" component={Register} />
-//                   <Route exact path="/profile" component={Profile} />
-
-//                   <Route
-//                     path="/user"
-//                     // component={BoardUser}
-//                     // component={showUserBoard && BoardUser}
-//                   >
-//                     {currentUser && <BoardUser currentUser={currentUser} />}
-//                   </Route>
-//                   <Route
-//                     path="/mod"
-//                     component={BoardModerator}
-//                     // component={showModeratorBoard && BoardModerator}
-//                   />
-//                   <Route
-//                     path="/admin"
-//                     component={BoardAdmin}
-//                     // component={showAdminBoard && BoardAdmin}
-//                   />
-//                 </Switch>
-//               </div>
-//             </>
-//           </Route>
-//         </Switch>
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;

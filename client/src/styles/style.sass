@@ -1,15 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
-$primaryColor: #35a8b8a6
-$primaryLightColor: #ffffff41
-$primaryShadow: #051818
+// $primaryColor: #f3f3f3
+// $primaryLightColor: #acacac
+// $primaryShadow: #2e5155
+// $textButtons: #000000
+
+// $primaryColor: #a4cd7997
+// $primaryLightColor: #e6fecc97
+// $primaryShadow: #b4b4b4
 
 // $primaryColor: #10969ba6
 // $primaryLightColor: #469fe941
 // $primaryShadow: #051818
 
-// $primaryColor: #4cb4dd
-// $primaryLightColor: #abcfdd
-// $primaryShadow: #334b55
+$primaryColor: #64bee1b7
+$primaryLightColor: #bbdce9cd
+$primaryShadow: #334b55
+$textButtons: #000000
 
 *
     box-sizing: border-box
@@ -17,15 +23,9 @@ $primaryShadow: #051818
     padding: 0
     margin: 0px
 
-// .main
-//     max-width: 1200px
-//     margin: 0 auto
-//     margin-top: 2rem
-//     background-color: white
-//     box-shadow: 5px 5px 10px #3d3c3c
-
 body
-    background: linear-gradient(90deg, $primaryLightColor, $primaryColor)
+    // background: linear-gradient(90deg, $primaryLightColor, $primaryColor)
+    background: $primaryLightColor !important
     font-family: 'Roboto', sans-serif !important
 
 .navTitle
@@ -82,15 +82,12 @@ body
     margin-top: 50px
     width: 95%
     box-shadow: 5px 5px 10px $primaryShadow
-    // border-radius: 8px !important
+    border-radius: 0px !important
 
-.profile-img-card
-    width: 96px
-    height: 96px
-    margin: 0 auto 10px
-    display: block
+.centerElements
+    display: grid !important
+    justify-content: center !important
 
-    border-radius: 50%
 .loginLogo
     margin: 0 auto 40px
     color: $primaryColor
@@ -103,7 +100,8 @@ body
     img
         width: 100%
 .textHome
-    font-size: 2.5rem
+    font-size: clamp(1.2rem,3vw,2.5rem)
+    text-align: center
     position: absolute
     font-weight: bolder
     top: 50%
@@ -111,13 +109,15 @@ body
     transform: translate(-50%, -50%)
     color: #000000
     text-shadow: 5px 5px 10px $primaryShadow
+    strong
+        font-size: clamp(2rem,3vw,3.5rem)
 
 .buttonAddOrder
     display: inline-block
     min-width: 150px
     padding: 10px
     background-color: $primaryColor
-    color: white
+    color: $textButtons
     font-size: 20px
     font-weight: bold
     cursor: pointer
@@ -143,8 +143,6 @@ body
     background-color: #cc1919
 .confirmButton
     background-color: #56c010
-// .popupBox
-//     width: 1000px
 
 .smallMargin
     margin: 10px !important
@@ -181,11 +179,7 @@ body
     margin: 0 auto
     margin-top: 40px
     box-shadow: 2px 2px 4px $primaryShadow
-// .react-bootstrap-table th
-//     background-color: red !important
 
-// table tr:nth-of-type(2)
-//     background-color: red !important
 .page-link
     background-color: $primaryColor !important
     border: 1px $primaryColor!important
@@ -210,7 +204,7 @@ body
     display: flex
     justify-content: center
 .scrollButton
-    color: white
+    color: $textButtons
     text-decoration: none
 
 select
@@ -227,20 +221,3 @@ select
 @media screen and (max-width:600px)
     .form-padding
         padding: 10px 10px
-
-//     .form-group
-
-//         display: flex
-//         flex-direction: column
-//         gap: 0px !important
-//         label
-
-//             // margin-left: auto
-//             font-weight: bolder
-//             // background-color: blue
-//             width: 100% !important
-//             text-align: left !important
-//         .form-control
-
-//             width: 100%
-//             // max-width: 500px

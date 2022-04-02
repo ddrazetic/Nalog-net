@@ -1,9 +1,10 @@
 import React from "react";
-import { Admin, Resource, Title } from "react-admin";
+import { Admin, Resource } from "react-admin";
 import UserList from "./UserList.js";
 import simpleRestProvider from "ra-data-simple-rest";
 import UserEdit from "./UserEdit";
 import { Link } from "react-router-dom";
+import { authProvider } from "./authProvider";
 
 const SuperAdmin = () => {
   return (
@@ -23,8 +24,10 @@ const SuperAdmin = () => {
       >
         HOME
       </Link>
-      <Admin dataProvider={simpleRestProvider("http://localhost:8080")}>
-        <Title title=" Nalog-net " />
+      <Admin
+        dataProvider={simpleRestProvider("http://localhost:8080")}
+        authProvider={authProvider}
+      >
         <Resource name="users" list={UserList} edit={UserEdit} />
       </Admin>
     </div>

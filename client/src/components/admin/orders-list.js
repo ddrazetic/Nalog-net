@@ -3,7 +3,7 @@ import OrderDataService from "../../services/order.service";
 // import EditOrder from "./edit-order.component";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import EditOrder from "./edit-order.component";
+import EditOrder from "./edit-order";
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
 
 const OrderList = (props) => {

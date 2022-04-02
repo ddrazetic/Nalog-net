@@ -1,11 +1,10 @@
-//import React, { useState } from "react";
-
 const express = require("express");
 const cors = require("cors");
 const app = express();
-//const [users1, setUsers1] = useState(0);
+
 var corsOptions = {
   enabled: true,
+  // origin: "http://192.168.0.118:8081",
   origin: "http://localhost:8081",
 };
 
@@ -42,13 +41,13 @@ app.get("/", (req, res) => {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
-// require("./app/routes/users.edit.routes")(app);
-// require("./app/routes/roles.edit.routes")(app);
 require("./app/routes/users_roles.edit.routes")(app);
 require("./app/routes/order.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
+// const hostname = "192.168.0.118";
+// app.listen(PORT, hostname, () => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

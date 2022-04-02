@@ -6,9 +6,8 @@ import {
   EditButton,
   DeleteButton,
 } from "react-admin";
-// import { ReferenceManyToManyField } from "@react-admin/ra-many-to-many";
+
 function UserList(props) {
-  // console.log({ ...props });
   return (
     <List {...props}>
       <Datagrid>

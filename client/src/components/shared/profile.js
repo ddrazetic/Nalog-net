@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../services/auth.service";
+import { Person } from "react-bootstrap-icons";
 
 const Profile = (props) => {
   const [redirect, setRedirect] = useState(null);
@@ -25,15 +26,16 @@ const Profile = (props) => {
   }
 
   return (
-    <div className="card card-container">
+    <div className="card card-container centerElements">
       {userReady ? (
         <div>
+          <Person className="loginLogo" size={250} />
           <header className="">
             <h3>
-              Username: <strong>{currentUser.username}</strong>
+              Korisničko ime: <strong>{currentUser.username}</strong>
             </h3>
             <h3>
-              Name: <strong>{currentUser.name}</strong>
+              Ime i prezime: <strong>{currentUser.name}</strong>
             </h3>
           </header>
 
@@ -43,7 +45,7 @@ const Profile = (props) => {
           <p>
             <strong>Email:</strong> {currentUser.email}
           </p>
-          <strong>Authorities:</strong>
+          <strong>Uloga u firmi:</strong>
           <ul>
             {currentUser.roles &&
               currentUser.roles.map((role, index) => (

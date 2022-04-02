@@ -13,8 +13,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
   });
-  // User.findAll().then(function (result) {
-  //   console.log(result);
-  // });
+
   return User;
 };

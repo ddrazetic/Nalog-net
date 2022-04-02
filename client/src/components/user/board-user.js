@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import Order from "./order.component";
-import OrderList from "./orders-list.component";
+import Order from "./order";
+import OrderList from "./orders-list";
 import UserService from "../../services/user.service";
 import EventBus from "../../common/EventBus";
 

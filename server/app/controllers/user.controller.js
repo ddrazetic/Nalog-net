@@ -1,5 +1,5 @@
 exports.allAccess = (req, res) => {
-  res.status(200).send("Welcome to Nalog-net site.");
+  res.status(200).send("Nalog-net");
 };
 
 exports.userBoard = (req, res) => {

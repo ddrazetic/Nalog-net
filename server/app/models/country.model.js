@@ -16,8 +16,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DECIMAL,
     },
   });
-  // User.findAll().then(function (result) {
-  //   console.log(result);
-  // });
+
   return Country;
 };

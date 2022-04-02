@@ -77,7 +77,7 @@ exports.delete = (req, res) => {
 
   User.destroy({ where: { id: id } })
     .then((result) => {
-      res.json({ redirect: "/userss" });
+      res.json({ redirect: "/users" });
     })
     .catch((err) => {
       console.log(err);

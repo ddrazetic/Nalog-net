@@ -47,8 +47,6 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: 2,
     },
   });
-  // User.findAll().then(function (result) {
-  //   console.log(result);
-  // });
+
   return Order;
 };

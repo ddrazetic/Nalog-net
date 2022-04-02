@@ -3,12 +3,12 @@ import OrderDataService from "../../services/order.service";
 // import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 // import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 // import { Link } from "react-router-dom";
-import EditOrder from "./edit-order.component";
+import EditOrder from "./edit-order";
 // import Table from "react-bootstrap/Table";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
-import EditCosts from "./edit-costs.component";
+import EditCosts from "./edit-costs";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();

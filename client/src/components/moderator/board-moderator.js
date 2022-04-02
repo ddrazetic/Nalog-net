@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import UserService from "../../services/user.service";
 import EventBus from "../../common/EventBus";
-import OrderList from "./orders-list.component";
+import OrderList from "./orders-list";
 const BoardModerator = (props) => {
   const [content, setContent] = useState("");
   const [currentUser] = useState(props.currentUser);

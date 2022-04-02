@@ -12,7 +12,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        Ovo polje je obavezno!
       </div>
     );
   }
@@ -22,7 +22,7 @@ const vemail = (value) => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        Nije valjani email!
       </div>
     );
   }
@@ -32,7 +32,7 @@ const vusername = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
+        Korisničko ime mora biti između 3 i 20 znakova!
       </div>
     );
   }
@@ -41,7 +41,7 @@ const vname = (value) => {
   if (value.length < 3 || value.length > 30) {
     return (
       <div className="alert alert-danger" role="alert">
-        Name must be between 3 and 30 characters.
+        Ime i prezime mora biti između 3 i 30 znakova!
       </div>
     );
   }
@@ -51,7 +51,7 @@ const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        Lozinka mora biti između 6 i 40 znakova!
       </div>
     );
   }
@@ -125,19 +125,18 @@ const Register = (props) => {
                 type="text"
                 className="loginInput"
                 name="username"
-                placeholder="name"
+                placeholder="Ime i prezime"
                 value={name}
                 onChange={onChangeName}
                 validations={[required, vname]}
               />
             </div>
             <div className="form-group">
-              {/* <label htmlFor="username">Username</label> */}
               <Input
                 type="text"
                 className="loginInput"
                 name="username"
-                placeholder="username"
+                placeholder="Korisničko ime"
                 value={username}
                 onChange={onChangeUsername}
                 validations={[required, vusername]}
@@ -145,12 +144,11 @@ const Register = (props) => {
             </div>
 
             <div className="form-group">
-              {/* <label htmlFor="email">Email</label> */}
               <Input
                 type="text"
                 className="loginInput"
                 name="email"
-                placeholder="email"
+                placeholder="Email"
                 value={email}
                 onChange={onChangeEmail}
                 validations={[required, vemail]}
@@ -158,12 +156,11 @@ const Register = (props) => {
             </div>
 
             <div className="form-group">
-              {/* <label htmlFor="password">Password</label> */}
               <Input
                 type="password"
                 className="loginInput"
                 name="password"
-                placeholder="password"
+                placeholder="Lozinka"
                 value={password}
                 onChange={onChangePassword}
                 validations={[required, vpassword]}
@@ -171,7 +168,7 @@ const Register = (props) => {
             </div>
 
             <div className="form-group">
-              <button className="loginButton">Sign Up</button>
+              <button className="loginButton">Registriraj se</button>
             </div>
           </div>
         )}

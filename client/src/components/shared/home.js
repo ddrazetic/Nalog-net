@@ -23,7 +23,9 @@ const Home = (props) => {
       <div className="imageHome">
         <img src={Homepage} alt="homepage"></img>
       </div>
-      <h1 className="textHome">{content}</h1>
+      <h1 className="textHome">
+        Dobrodošli na stranicu <br /> <strong>{content}</strong>
+      </h1>
     </div>
   );
 };
