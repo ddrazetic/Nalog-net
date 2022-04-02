@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import OrderDataService from "../../services/order.service";
-// import EditOrder from "./edit-order.component";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
+import { toast } from "react-toastify";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();
   const [currentOrder, setCurrentOrder] = useState();
   const [currentIndex, setCurrentIndex] = useState();
-  // const [showing, setShowing] = useState(false);
-  // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
-    // document.querySelectorAll(".buttonAddOrder").inner("style", `color:red`);
     props.childFunc.current = refreshList; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const retrieveOrders = () => {
@@ -33,14 +30,19 @@ const OrderList = (props) => {
     retrieveOrders();
     setCurrentOrder(null);
     setCurrentIndex(-1);
-    // setShowing(false);
   };
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
     setCurrentIndex(index);
-
-    // setShowing(false);
   };
+
+  const notifyConfirmOrder = () =>
+    toast("Potvrdili ste nalog i poslali ga direktoru na pregled!");
+
+  const notifyRejectOrder = () => toast("Odbili ste nalog!");
+
+  const notifyEditOrder = () =>
+    toast("Vratili ste nalog nazad do djelatnika na izmjene!");
 
   const updateOrder = (roleEditId) => {
     OrderDataService.update(currentOrder.id, {
@@ -95,13 +97,11 @@ const OrderList = (props) => {
   ];
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
-      // console.log(`clicked on row with index: ${row.id}`);
       setActiveOrder(row, row.id);
     },
   };
 
   const rowClasses = (row, rowIndex) => {
-    // if (row.roleEditId === 2) return "opacityRow";
     if (row.id === currentIndex) return "active";
     if (row.roleEditId === 5) return "redRow ";
     if (row.roleEditId === 6) return "yellowRow ";
@@ -119,7 +119,7 @@ const OrderList = (props) => {
             keyField="id"
             data={orders ? orders : []}
             columns={columns}
-            striped
+            // striped
             bordered
             hover
             responsive="sm"
@@ -207,15 +207,14 @@ const OrderList = (props) => {
                 </label>{" "}
                 {currentOrder.roleEditId}
               </div>
-              {/* OVO SE TREBA PROMIJENITI U 2 KASNIJE */}
+
               {currentOrder.roleEditId === 2 ? (
-                // || currentOrder.roleEditId === 5
                 <>
                   <button
                     className={`buttonAddOrder confirmButton  buttonAddOrderSmall smallMargin `}
                     onClick={() => {
                       updateOrder(3);
-                      // console.log(currentOrder.roleEditId);
+                      notifyConfirmOrder();
                     }}
                   >
                     Potvrdite nalog
@@ -224,7 +223,7 @@ const OrderList = (props) => {
                     className={`buttonAddOrder  buttonAddOrderSmall smallMargin closeButton `}
                     onClick={() => {
                       updateOrder(5);
-                      // console.log(currentOrder.roleEditId);
+                      notifyRejectOrder();
                     }}
                   >
                     Odbijte nalog
@@ -233,7 +232,7 @@ const OrderList = (props) => {
                     className={`buttonAddOrder  buttonAddOrderSmall smallMargin `}
                     onClick={() => {
                       updateOrder(1);
-                      // console.log(currentOrder.roleEditId);
+                      notifyEditOrder();
                     }}
                   >
                     Potrebne izmjene
@@ -266,25 +265,31 @@ const OrderList = (props) => {
                     <label>
                       <strong>Ukupno dnevnica:</strong>
                     </label>{" "}
-                    {currentOrder.salary * currentOrder.numberOfDays} HRK
+                    {parseFloat(
+                      currentOrder.salary * currentOrder.numberOfDays
+                    ).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                   <div>
                     <label>
                       <strong>Putni troškovi:</strong>
                     </label>{" "}
-                    {currentOrder.travelCosts} HRK
+                    {parseFloat(currentOrder.travelCosts).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                   <div>
                     <label>
                       <strong>Ostali troškovi:</strong>
                     </label>{" "}
-                    {currentOrder.otherCosts} HRK
+                    {parseFloat(currentOrder.otherCosts).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                   <div style={{ fontSize: "20px" }}>
                     <label>
                       <strong>UKUPNO:</strong>
                     </label>{" "}
-                    {currentOrder.totalCosts} HRK
+                    {parseFloat(currentOrder.totalCosts).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                 </>
               ) : (
@@ -304,9 +309,6 @@ const OrderList = (props) => {
           )}
         </div>
       </div>
-      {/* {showing && currentOrder ? (
-        <EditOrder refreshList={refreshList} currentOrder={currentOrder} />
-      ) : null} */}
     </>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
 import "./styles/style.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import AuthService from "./services/auth.service";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
@@ -16,6 +17,7 @@ import BoardModerator from "./components/moderator/board-moderator";
 import BoardAdmin from "./components/admin/board-admin";
 import SuperAdmin from "./components/super_admin/SuperAdmin";
 import EventBus from "./common/EventBus";
+import { ToastContainer } from "react-toastify";
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState();
@@ -164,6 +166,17 @@ const App = (props) => {
                   {currentUser && <BoardAdmin currentUser={currentUser} />}
                 </Route>
               </Switch>
+              <ToastContainer
+                position="bottom-center"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
             </div>
           </>
         </Route>

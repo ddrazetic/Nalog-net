@@ -7,6 +7,7 @@ import Input from "react-validation/build/input";
 import Select from "react-validation/build/select";
 import Textarea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
+import { toast } from "react-toastify";
 
 const required = (value) => {
   if (!value) {
@@ -35,8 +36,6 @@ const EditOrder = (props) => {
     roleEditId: "",
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
-
-  // const [message, setMessage] = useState("");
   const [moderators, setModerators] = useState([]);
   const [countries, setCountries] = useState([]);
   const form = useRef();
@@ -92,19 +91,22 @@ const EditOrder = (props) => {
     });
   };
 
+  const notifyConfirmOrder = () =>
+    toast("Potvrdili ste nalog i poslali ga direktoru na pregled!");
+
   const updateOrder = (e) => {
     e.preventDefault();
 
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      notifyConfirmOrder();
       OrderDataService.update(currentOrder.id, {
         ...currentOrder,
         roleEditId: 6,
       })
         .then((response) => {
           console.log(response.data);
-          // setMessage("The Order was updated successfully!");
           if (response.data) {
             props.refreshList();
           }
@@ -174,7 +176,6 @@ const EditOrder = (props) => {
                 id="editId"
                 readOnly
                 value={currentOrder.editId}
-                // onChange={onChangeeditId}
                 name="editId"
               />
             </div>
@@ -186,7 +187,6 @@ const EditOrder = (props) => {
                 id="description"
                 readOnly
                 value={currentOrder.nameWorker}
-                // onChange={onChangenameWorker}
                 name="nameWorker"
               />
             </div>
@@ -247,7 +247,6 @@ const EditOrder = (props) => {
                 placeholder="dnevnica"
                 readOnly
                 value={currentOrder.salary}
-                // onChange={handleInputChange}
                 name="salary"
               />
             </div>
@@ -319,7 +318,7 @@ const EditOrder = (props) => {
       ) : (
         <div>
           <br />
-          <p>Please click on a Order...</p>
+          <p>Klikni na nalog...</p>
         </div>
       )}
     </div>

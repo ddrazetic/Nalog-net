@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Redirect } from "react-router";
 import Order from "./order";
 import OrderList from "./orders-list";
 import UserService from "../../services/user.service";
@@ -8,9 +9,9 @@ const BoardUser = (props) => {
   const [currentUser] = useState(props.currentUser);
   const [content, setContent] = useState("");
   const [showing, setShowing] = useState(false);
+  const [redirect, setRedirect] = useState(null);
   const childFunc = useRef(null);
   useEffect(() => {
-    // console.log(this.state.currentUser);
     UserService.getUserBoard().then(
       (response) => {
         setContent(response.data);
@@ -24,16 +25,23 @@ const BoardUser = (props) => {
             error.toString()
         );
 
+        if (error.response && error.response.status === 403) {
+          setRedirect("/");
+        }
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
         }
       }
     );
   }, []);
+
+  if (redirect) {
+    return <Redirect to={redirect} />;
+  }
+
   return (
     <div className="card card-containerMax">
-      <header>{/* <h3>{this.state.content}</h3> */}</header>
-      {content === "User Content." ? ( // <p>pristup dozvoljen</p>
+      {content === "User Content." ? (
         <>
           {" "}
           <button

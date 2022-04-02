@@ -12,7 +12,7 @@ const Profile = (props) => {
   useEffect(() => {
     const currentUser1 = AuthService.getCurrentUser();
 
-    if (!currentUser) {
+    if (!currentUser1) {
       setRedirect("/");
     }
 

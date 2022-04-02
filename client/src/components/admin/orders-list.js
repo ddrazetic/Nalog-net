@@ -5,6 +5,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import EditOrder from "./edit-order";
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
+import { toast } from "react-toastify";
 
 const OrderList = (props) => {
   const [orders, setOrders] = useState();
@@ -41,6 +42,20 @@ const OrderList = (props) => {
 
     setShowing(false);
   };
+
+  const notifyConfirmOrder = () =>
+    toast("Potvrdili ste nalog i čekate troškove za plaćanje!");
+
+  const notifyRejectOrder = () => toast("Odbili ste nalog!");
+
+  const notifyEditOrder = () =>
+    toast("Vratili ste nalog nazad do djelatnika na izmjene!");
+  const notifyPaidOrder = () =>
+    toast(
+      "Uspješno ste platili troškove u iznosu: " +
+        parseFloat(currentOrder.totalCosts).toLocaleString("en") +
+        "HRK"
+    );
 
   const updateOrder = (roleEditId) => {
     OrderDataService.update(currentOrder.id, {
@@ -120,7 +135,7 @@ const OrderList = (props) => {
             data={orders ? orders : []}
             columns={columns}
             striped
-            bordered
+            // bordered
             hover
             responsive="sm"
             pagination={paginationFactory()}
@@ -216,6 +231,7 @@ const OrderList = (props) => {
                     onClick={() => {
                       updateOrder(6);
                       // console.log(currentOrder.roleEditId);
+                      notifyConfirmOrder();
                     }}
                   >
                     Potvrdite nalog
@@ -225,6 +241,7 @@ const OrderList = (props) => {
                     onClick={() => {
                       updateOrder(5);
                       // console.log(currentOrder.roleEditId);
+                      notifyRejectOrder();
                     }}
                   >
                     Odbijte nalog
@@ -233,6 +250,7 @@ const OrderList = (props) => {
                     className={`buttonAddOrder  buttonAddOrderSmall smallMargin `}
                     onClick={() => {
                       updateOrder(1);
+                      notifyEditOrder();
                       // console.log(currentOrder.roleEditId);
                     }}
                   >
@@ -281,25 +299,31 @@ const OrderList = (props) => {
                     <label>
                       <strong>Ukupno dnevnica:</strong>
                     </label>{" "}
-                    {currentOrder.salary * currentOrder.numberOfDays} HRK
+                    {parseFloat(
+                      currentOrder.salary * currentOrder.numberOfDays
+                    ).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                   <div>
                     <label>
                       <strong>Putni troškovi:</strong>
                     </label>{" "}
-                    {currentOrder.travelCosts} HRK
+                    {parseFloat(currentOrder.travelCosts).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                   <div>
                     <label>
                       <strong>Ostali troškovi:</strong>
                     </label>{" "}
-                    {currentOrder.otherCosts} HRK
+                    {parseFloat(currentOrder.otherCosts).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                   <div style={{ fontSize: "20px" }}>
                     <label>
                       <strong>UKUPNO:</strong>
                     </label>{" "}
-                    {currentOrder.totalCosts} HRK
+                    {parseFloat(currentOrder.totalCosts).toLocaleString("en")}{" "}
+                    HRK
                   </div>
                 </>
               ) : (
@@ -311,7 +335,7 @@ const OrderList = (props) => {
                     className={`buttonAddOrder  buttonAddOrderSmall smallMargin `}
                     onClick={() => {
                       updateOrder(8);
-                      // console.log(currentOrder.roleEditId);
+                      notifyPaidOrder();
                     }}
                   >
                     Plaćeno

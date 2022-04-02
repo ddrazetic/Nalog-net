@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-// import "react-popupbox/dist/react-popupbox.css";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Textarea from "react-validation/build/textarea";
 import Select from "react-validation/build/select";
 import CheckButton from "react-validation/build/button";
-
 import OrderDataService from "../../services/order.service";
 import ModeratorsDataService from "../../services/moderators.service";
+import { toast } from "react-toastify";
 
 const required = (value) => {
   if (!value) {
@@ -20,7 +19,6 @@ const required = (value) => {
 };
 
 const Order = (props) => {
-  // const [currentUser, setCurrentUser] = useState();
   const [nameWorker, setNameWorker] = useState();
   const [editId, setEditId] = useState();
   const [moderators, setModerators] = useState([]);
@@ -35,21 +33,16 @@ const Order = (props) => {
   const [numberOfDays, setNumberOfDays] = useState();
   const [addition, setAddition] = useState();
 
-  // const [successful, setSuccessful] = useState();
   const [submitted, setSubmitted] = useState();
-  // const [message, setMessage] = useState();
   const form = useRef();
   const checkBtn = useRef();
   /* eslint-disable no-unused-vars */
   const [id, setId] = useState();
   useEffect(() => {
-    // setCurrentUser(props.currentUser);
-    // setSalary(100);
     setNameWorker(props.currentUser.name);
     setEditId(props.currentUser.id);
     retrieveModerators();
     retrieveCountries();
-    // console.log(moderators);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const retrieveModerators = () => {
     ModeratorsDataService.getAll()
@@ -71,6 +64,9 @@ const Order = (props) => {
         console.log(e);
       });
   };
+
+  const notifyCreateOrder = () =>
+    toast("Uspješno ste kreirali nalog i poslali ga voditelju na pregled!");
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -98,7 +94,6 @@ const Order = (props) => {
           }
         })
     );
-    // console.log(salary);
   };
   const onChangeplaceDestination = (e) => {
     setPlaceDestination(e.target.value);
@@ -117,10 +112,10 @@ const Order = (props) => {
   };
   const saveOrder = (e) => {
     e.preventDefault();
-    // setMessage("");
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      notifyCreateOrder();
       setSubmitted(true);
       var data = {
         title: title,
@@ -151,7 +146,6 @@ const Order = (props) => {
           setNumberOfDays(response.data.numberOfDays);
           setAddition(response.data.addition);
           console.log(response.data);
-          // setSuccessful(true);
           if (response.data) {
             props.childFunc();
           }
@@ -200,7 +194,6 @@ const Order = (props) => {
                 type="text"
                 className="form-control  "
                 id="title"
-                // required="required"
                 placeholder="unesite naslov"
                 value={title || ""}
                 onChange={onChangeTitle}
@@ -215,7 +208,6 @@ const Order = (props) => {
                 rows={3}
                 className="form-control"
                 id="description"
-                // required
                 placeholder="opišite putovanje"
                 value={description || ""}
                 onChange={onChangeDescription}
@@ -229,10 +221,8 @@ const Order = (props) => {
                 type="text"
                 className="form-control"
                 id="editId"
-                // required
                 readOnly
                 value={editId}
-                // onChange={onChangeeditId}
                 name="editId"
               />
             </div>
@@ -245,7 +235,6 @@ const Order = (props) => {
                 required
                 readOnly
                 value={nameWorker}
-                // onChange={onChangenameWorker}
                 name="description"
               />
             </div>
@@ -288,7 +277,6 @@ const Order = (props) => {
                 type="text"
                 className="form-control"
                 id="title"
-                // required
                 validations={[required]}
                 placeholder="unesite mjesto putovanja"
                 value={placeDestination || ""}
@@ -302,9 +290,7 @@ const Order = (props) => {
                 type="number"
                 className="form-control"
                 id="description"
-                // required
                 placeholder="dnevnica"
-                // value={salary || ""}
                 value={salary || ""}
                 readOnly
                 name="description"
@@ -317,7 +303,6 @@ const Order = (props) => {
                 type="date"
                 className="form-control"
                 id="title"
-                // required
                 placeholder="odaberite datum početka putovanja"
                 validations={[required]}
                 value={date || ""}
@@ -331,7 +316,6 @@ const Order = (props) => {
                 type="number"
                 className="form-control"
                 id="description"
-                // required
                 validations={[required]}
                 placeholder="unesite broj dana boravka"
                 value={numberOfDays || ""}
@@ -346,8 +330,6 @@ const Order = (props) => {
                 className="form-control"
                 rows={3}
                 id="description"
-                // validations={[required]}
-                // required
                 placeholder="Napišite dodatne stavke vezane uz putovanje"
                 value={addition || ""}
                 onChange={onChangeaddition}

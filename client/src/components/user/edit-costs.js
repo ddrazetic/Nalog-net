@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import OrderDataService from "../../services/order.service";
-// import ModeratorsDataService from "../../services/moderators.service";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-// import Select from "react-validation/build/select";
-// import Textarea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
-
+import { toast } from "react-toastify";
 const required = (value) => {
   if (!value) {
     return (
@@ -52,6 +49,14 @@ const EditCosts = (props) => {
       parseFloat(currentOrder.numberOfDays * currentOrder.salary);
     return sum;
   };
+
+  const notifyEditCosts = () =>
+    toast(
+      "Uspješno ste izračunali troškove! Ukupni troškovi su: " +
+        sumAllCosts().toLocaleString("en") +
+        "HRK"
+    );
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentOrder({
@@ -66,6 +71,7 @@ const EditCosts = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      notifyEditCosts();
       OrderDataService.update(currentOrder.id, {
         ...currentOrder,
         roleEditId: 7,
@@ -105,7 +111,6 @@ const EditCosts = (props) => {
                 placeholder="dnevnica"
                 readOnly
                 value={currentOrder.salary}
-                // onChange={handleInputChange}
                 name="salary"
               />
             </div>
@@ -149,23 +154,7 @@ const EditCosts = (props) => {
                 validations={[required]}
               />
             </div>
-            {/* <div className="form-group">
-              <label htmlFor="otherCosts">Ostali troškovi:</label>
-              <Input
-                type="text"
-                className="form-control"
-                id="number"
-                placeholder="unesite ostale troškove."
-                value={
-                  parseFloat(currentOrder.otherCosts)
-                    .toLocaleString()
-                    .replace(/,/g, " ") || ""
-                }
-                onChange={handleInputChange}
-                name="otherCosts"
-                validations={[required]}
-              />
-            </div> */}
+
             <div className="form-group">
               <label htmlFor="totalCosts">Ukupni troškovi (HRK):</label>
               <Input
@@ -174,9 +163,7 @@ const EditCosts = (props) => {
                 id="number"
                 placeholder="unesite troškove puta."
                 readOnly
-                // value={currentOrder.totalCosts || ""}
                 value={sumAllCosts().toLocaleString("en")}
-                // onChange={handleInputChange}
                 name="totalCosts"
                 validations={[required]}
               />

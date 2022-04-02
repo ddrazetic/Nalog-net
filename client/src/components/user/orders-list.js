@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import OrderDataService from "../../services/order.service";
-// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-// import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-// import { Link } from "react-router-dom";
 import EditOrder from "./edit-order";
-// import Table from "react-bootstrap/Table";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
@@ -16,10 +12,8 @@ const OrderList = (props) => {
   const [currentIndex, setCurrentIndex] = useState();
   const [showing, setShowing] = useState(false);
   const [showingCosts, setShowingCosts] = useState(false);
-  // const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     retrieveOrders();
-    // document.querySelectorAll(".buttonAddOrder").inner("style", `color:red`);
     props.childFunc.current = refreshList; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const retrieveOrders = () => {
@@ -84,13 +78,11 @@ const OrderList = (props) => {
   ];
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
-      // console.log(`clicked on row with index: ${row.id}`);
       setActiveOrder(row, row.id);
     },
   };
 
   const rowClasses = (row, rowIndex) => {
-    // if (row.roleEditId === 2) return "opacityRow";
     if (row.id === currentIndex) return "active";
     if (row.roleEditId === 5) return "redRow  ";
     if (row.roleEditId === 6) return "yellowRow ";
@@ -119,7 +111,7 @@ const OrderList = (props) => {
             keyField="id"
             data={orders ? orders : []}
             columns={columns}
-            striped
+            // striped
             bordered
             hover
             responsive="sm"
@@ -207,7 +199,7 @@ const OrderList = (props) => {
                 </label>{" "}
                 {currentOrder.roleEditId}
               </div>
-              {/* OVO SE TREBA PROMIJENITI U 1 KASNIJE */}
+
               {currentOrder.roleEditId === 1 ? (
                 <>
                   <button
@@ -216,7 +208,6 @@ const OrderList = (props) => {
                     }  `}
                     onClick={() => {
                       setShowing(!showing);
-                      // window.location("#editOrder");
                     }}
                   >
                     {showing ? (
@@ -241,7 +232,6 @@ const OrderList = (props) => {
                         }  `}
                         onClick={() => {
                           setShowingCosts(!showingCosts);
-                          // window.location("#editOrder");
                         }}
                       >
                         {showingCosts ? (

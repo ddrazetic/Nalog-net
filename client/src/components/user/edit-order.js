@@ -6,6 +6,7 @@ import Input from "react-validation/build/input";
 import Select from "react-validation/build/select";
 import Textarea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
+import { toast } from "react-toastify";
 
 const required = (value) => {
   if (!value) {
@@ -35,7 +36,6 @@ const EditOrder = (props) => {
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
 
-  // const [message, setMessage] = useState("");
   const [moderators, setModerators] = useState([]);
   const [countries, setCountries] = useState([]);
   const form = useRef();
@@ -68,6 +68,9 @@ const EditOrder = (props) => {
       });
   };
 
+  const notifyEditOrder = () =>
+    toast("Uspješno ste uredili nalog i poslali ga voditelju na pregled!");
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentOrder({ ...currentOrder, [name]: value });
@@ -97,13 +100,13 @@ const EditOrder = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      notifyEditOrder();
       OrderDataService.update(currentOrder.id, {
         ...currentOrder,
         roleEditId: 2,
       })
         .then((response) => {
           console.log(response.data);
-          // setMessage("The Order was updated successfully!");
           if (response.data) {
             props.refreshList();
           }
@@ -131,6 +134,7 @@ const EditOrder = (props) => {
       {currentOrder ? (
         <div className="edit-form submit-form form-padding " id="editOrder">
           <h4>Uredi nalog br. {currentOrder.id}</h4>
+
           <Form
             className="formInputOrder"
             onSubmit={updateOrder}
@@ -173,7 +177,6 @@ const EditOrder = (props) => {
                 id="editId"
                 readOnly
                 value={currentOrder.editId}
-                // onChange={onChangeeditId}
                 name="editId"
               />
             </div>
@@ -185,7 +188,6 @@ const EditOrder = (props) => {
                 id="description"
                 readOnly
                 value={currentOrder.nameWorker}
-                // onChange={onChangenameWorker}
                 name="nameWorker"
               />
             </div>
@@ -246,7 +248,6 @@ const EditOrder = (props) => {
                 placeholder="dnevnica"
                 readOnly
                 value={currentOrder.salary}
-                // onChange={handleInputChange}
                 name="salary"
               />
             </div>
@@ -318,7 +319,7 @@ const EditOrder = (props) => {
       ) : (
         <div>
           <br />
-          <p>Please click on a Order...</p>
+          <p>Kliknite na nalog...</p>
         </div>
       )}
     </div>
