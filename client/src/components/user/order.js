@@ -18,6 +18,34 @@ const required = (value) => {
   }
 };
 
+const vnumberOfDays = (value) => {
+  if (value < 0 || value > 10000) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj dana mora biti između 1 i 10 000!
+      </div>
+    );
+  }
+};
+const vString = (value) => {
+  if (value.length > 255 || value.length < 3) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj znakova mora biti između 3 i 255!
+      </div>
+    );
+  }
+};
+const vaddition = (value) => {
+  if (value.length > 255) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj znakova ne smije prelaziti 255!
+      </div>
+    );
+  }
+};
+
 const Order = (props) => {
   const [nameWorker, setNameWorker] = useState();
   const [editId, setEditId] = useState();
@@ -198,7 +226,7 @@ const Order = (props) => {
                 value={title || ""}
                 onChange={onChangeTitle}
                 name="title"
-                validations={[required]}
+                validations={[required, vString]}
               />
             </div>
             <div className="form-group">
@@ -212,7 +240,7 @@ const Order = (props) => {
                 value={description || ""}
                 onChange={onChangeDescription}
                 name="description"
-                validations={[required]}
+                validations={[required, vString]}
               />
             </div>
             <div className="form-group">
@@ -277,7 +305,7 @@ const Order = (props) => {
                 type="text"
                 className="form-control"
                 id="title"
-                validations={[required]}
+                validations={[required, vString]}
                 placeholder="unesite mjesto putovanja"
                 value={placeDestination || ""}
                 onChange={onChangeplaceDestination}
@@ -316,7 +344,7 @@ const Order = (props) => {
                 type="number"
                 className="form-control"
                 id="description"
-                validations={[required]}
+                validations={[required, vnumberOfDays]}
                 placeholder="unesite broj dana boravka"
                 value={numberOfDays || ""}
                 onChange={onChangenumberOfDays}
@@ -332,6 +360,7 @@ const Order = (props) => {
                 id="description"
                 placeholder="Napišite dodatne stavke vezane uz putovanje"
                 value={addition || ""}
+                validations={[vaddition]}
                 onChange={onChangeaddition}
                 name="description"
               />

@@ -18,6 +18,33 @@ const required = (value) => {
     );
   }
 };
+const vnumberOfDays = (value) => {
+  if (value < 0 || value > 10000) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj dana mora biti između 1 i 10 000!
+      </div>
+    );
+  }
+};
+const vString = (value) => {
+  if (value.length > 255 || value.length < 3) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj znakova mora biti između 3 i 255!
+      </div>
+    );
+  }
+};
+const vaddition = (value) => {
+  if (value.length > 255) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj znakova ne smije prelaziti 255!
+      </div>
+    );
+  }
+};
 
 const EditOrder = (props) => {
   const initialOrderState = {
@@ -151,7 +178,7 @@ const EditOrder = (props) => {
                 value={currentOrder.title}
                 onChange={handleInputChange}
                 name="title"
-                validations={[required]}
+                validations={[required, vString]}
               />
             </div>
             <div className="form-group">
@@ -165,7 +192,7 @@ const EditOrder = (props) => {
                 value={currentOrder.description}
                 onChange={handleInputChange}
                 name="description"
-                validations={[required]}
+                validations={[required, vString]}
               />
             </div>
             <div className="form-group">
@@ -235,7 +262,7 @@ const EditOrder = (props) => {
                 value={currentOrder.placeDestination}
                 onChange={handleInputChange}
                 name="placeDestination"
-                validations={[required]}
+                validations={[required, vString]}
               />
             </div>
             <div className="form-group">
@@ -274,7 +301,7 @@ const EditOrder = (props) => {
                 value={currentOrder.numberOfDays}
                 onChange={handleInputChange}
                 name="numberOfDays"
-                validations={[required]}
+                validations={[required, vnumberOfDays]}
               />
             </div>
             <div className="form-group">
@@ -287,6 +314,7 @@ const EditOrder = (props) => {
                 placeholder="Napišite dodatne stavke vezane uz putovanje"
                 value={currentOrder.addition || ""}
                 onChange={handleInputChange}
+                validations={[vaddition]}
                 name="addition"
               />
             </div>

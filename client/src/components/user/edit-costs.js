@@ -13,6 +13,24 @@ const required = (value) => {
     );
   }
 };
+const vnumberOfDays = (value) => {
+  if (value < 0 || value > 10000) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Broj dana mora biti između 1 i 10 000!
+      </div>
+    );
+  }
+};
+const votherCosts = (value) => {
+  if (value < 0 || value > 40000000) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Troškovi moraju biti između 1 HRK i 40 000 000 HRK!
+      </div>
+    );
+  }
+};
 
 const EditCosts = (props) => {
   const initialOrderState = {
@@ -121,11 +139,11 @@ const EditCosts = (props) => {
                 type="number"
                 className="form-control"
                 id="number"
-                placeholder="unesite broj dana boravka"
+                placeholder="1 dan - 10 000 dana"
                 value={currentOrder.numberOfDays}
                 onChange={handleInputChange}
                 name="numberOfDays"
-                validations={[required]}
+                validations={[required, vnumberOfDays]}
               />
             </div>
             <div className="form-group">
@@ -134,11 +152,11 @@ const EditCosts = (props) => {
                 type="number"
                 className="form-control"
                 id="number"
-                placeholder="unesite troškove puta."
+                placeholder="1 HRK - 40 000 000 HRK"
                 value={currentOrder.travelCosts || ""}
                 onChange={handleInputChange}
                 name="travelCosts"
-                validations={[required]}
+                validations={[required, votherCosts]}
               />
             </div>
             <div className="form-group">
@@ -147,11 +165,11 @@ const EditCosts = (props) => {
                 type="number"
                 className="form-control"
                 id="number"
-                placeholder="unesite ostale troškove."
+                placeholder="1 HRK - 40 000 000 HRK"
                 value={currentOrder.otherCosts || ""}
                 onChange={handleInputChange}
                 name="otherCosts"
-                validations={[required]}
+                validations={[required, votherCosts]}
               />
             </div>
 
