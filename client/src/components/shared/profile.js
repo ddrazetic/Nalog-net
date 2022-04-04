@@ -49,7 +49,15 @@ const Profile = (props) => {
           <ul>
             {currentUser.roles &&
               currentUser.roles.map((role, index) => (
-                <li key={index}>{role}</li>
+                <li key={index}>
+                  {role === "ROLE_USER"
+                    ? "djelatnik"
+                    : role === "ROLE_ADMIN"
+                    ? "direktor"
+                    : role === "ROLE_MODERATOR"
+                    ? "voditelj jedinice"
+                    : ""}
+                </li>
               ))}
           </ul>
         </div>
